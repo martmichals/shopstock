@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shopstock/backshop/coordinate.dart';
+import 'package:shopstock/backshop/report.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
@@ -67,6 +68,6 @@ Future<bool> getAndSaveItems() async{
 }
 
 // TODO: Implement a method to send report data
-//Future<bool>sendReport(Report report){
-
-//}
+Future<bool>sendReport(Report report){
+  return null;
+}

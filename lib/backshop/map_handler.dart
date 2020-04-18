@@ -63,7 +63,7 @@ class MapHandler {
     _northEastData.setLat(_northEastScreen.lat + expansionLat);
     _northEastData.setLong(_northEastScreen.long + expansionLong);
 
-    var pulledList = await getStoresInArea(_southWestData, _northEastData);
+    final pulledList = await getStoresInArea(_southWestData, _northEastData);
     if (pulledList == null) _storesInArea = new List(0);
   }
 
