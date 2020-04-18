@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:shopstock/backshop/api_caller.dart';
 import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/store.dart';
