@@ -1,5 +1,8 @@
 import 'package:shopstock/backshop/coordinate.dart';
 
+import '../Item.dart';
+import 'api_caller.dart';
+
 // Class to represent a Store
 class Store{
   final String _storeID;
@@ -7,10 +10,11 @@ class Store{
   final String _storeAddress;
   final Coordinate _location;
 
-  // TODO : Add a SplayTreeMap for <K:V> pairs (itemID:confidence)
-
   // Constructor
   Store(this._storeID, this._storeName, this._storeAddress, this._location);
+
+  // Async Getter Methods
+  Future<List<Item>> getItems() async => await getItemsInStore(_storeID);
 
   // Getter Methods
   String get storeID => _storeID;

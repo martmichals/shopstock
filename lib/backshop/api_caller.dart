@@ -7,6 +7,8 @@ import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
 
+import '../Item.dart';
+
 const String ShopstockUrl = 'https://shopstock.live/api/';
 const String TAG = 'apicaller - ';
 
@@ -35,6 +37,11 @@ Future<List<Store>> getStoresInArea(Coordinate southWest, Coordinate northEast) 
   }
 }
 
+// TODO : Implement the API call to get the items in the store
+Future<List<Item>> getItemsInStore(String storeID){
+  return null;
+}
+
 /*  Method to get and save the list of all items
     Returns true if the pull and save were successful
  */
@@ -57,3 +64,8 @@ Future<bool> getAndSaveItems() async{
   }
   return false;
 }
+
+// TODO: Implement a method to send report data
+//Future<bool>sendReport(Report report){
+
+//}
