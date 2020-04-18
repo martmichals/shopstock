@@ -67,4 +67,12 @@ class MapHandler {
     var pulledList = await getStoresInArea(_southWestData, _northEastData);
     if (pulledList == null) _storesInArea = new List(0);
   }
+
+  @override
+  String toString() {
+    return 'Southwest Screen Corner: $_southWestScreen\n'
+        'Northeast Screen Corner: $_northEastScreen\n'
+        'Southwest Data Corner:$_southWestData\n'
+        'Northeast Data Corner:$_northEastData\n';
+  }
 }
