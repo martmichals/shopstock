@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopstock/theme.dart';
+import '../backshop/store.dart';
 
 class MapExplore extends StatefulWidget {
   @override
@@ -8,13 +9,31 @@ class MapExplore extends StatefulWidget {
 }
 
 class _MapExploreState extends State<MapExplore> {
+  var _markers = <Marker>[];
+
   void _onMarkerTap() {
     Navigator.pushNamed(context, "/map_explore/store_info");
   }
 
+  Marker _storeToMarker(Store store) {
+    LatLng location = LatLng(
+      store.location.lat,
+      store.location.long
+    );
+
+    return Marker(
+      markerId: MarkerId(store.storeID.toString()),
+      position: location,
+      infoWindow: InfoWindow(
+        title: store.storeName,
+        onTap: _onMarkerTap
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _markers = <Marker>[
+    var _tempMarkers = <Marker>[
       Marker(
           markerId: MarkerId("0"),
           position: new LatLng(41.894996, -87.629224),
@@ -42,9 +61,26 @@ class _MapExploreState extends State<MapExplore> {
     ];
 
     var center = LatLng(0, 0);
-    for (int i = 0; i < _markers.length; i++) {
-      center = LatLng(center.latitude + (_markers[i].position.latitude / _markers.length), center.longitude + (_markers[i].position.longitude / _markers.length));
+    for (int i = 0; i < _tempMarkers.length; i++) {
+      center = LatLng(center.latitude + (_tempMarkers[i].position.latitude / _tempMarkers.length), center.longitude + (_tempMarkers[i].position.longitude / _tempMarkers.length));
     }
+
+    GoogleMap gMap;
+    gMap = GoogleMap(
+      initialCameraPosition: CameraPosition(
+          target: center,
+          zoom: 15.0
+      ),
+      onCameraMove: (camPos) {
+        var bounds = gMap.cameraTargetBounds.bounds;
+        var stores = <Store>[]; // = Backend.GetStoresByBound(bounds.northeast, bounds.southwest);
+        setState(() {
+          _markers = stores.map(_storeToMarker).toList();
+        });
+      },
+      markers: _markers.toSet(),
+    );
+
 
     return Scaffold(
       body: SafeArea(
@@ -60,13 +96,7 @@ class _MapExploreState extends State<MapExplore> {
             ),
             Expanded(
               child: Padding(
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                        target: center,
-                        zoom: 17.0
-                    ),
-                    markers: _markers.toSet(),
-                  ),
+                child: gMap,
                 padding: EdgeInsets.all(PADDING),
               ),
             ),
