@@ -40,7 +40,7 @@ Future<List<Store>> getStoresInArea(Coordinate southWest, Coordinate northEast) 
 
 // TODO : Implement the API call to get the items in the store
 // Method to get the items in a store
-Future<List<Item>> getItemsInStore(String storeID){
+Future<List<Item>> getItemsInStore(int storeID){
   return null;
 }
 

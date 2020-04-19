@@ -13,7 +13,7 @@ class App extends StatelessWidget  {
 
     // Test code for async
     final sw = Coordinate(41.889687, -87.630233);
-    final ne = Coordinate(41.893952, -87.625658);
+    final ne = Coordinate(42.893952, -87.625658);
     getStoresInArea(sw, ne);
 
     getAndSaveItems();
