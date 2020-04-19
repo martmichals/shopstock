@@ -66,13 +66,17 @@ class _MapExploreState extends State<MapExplore> {
     }
 
     GoogleMap gMap;
+    GoogleMapController gMapController;
     gMap = GoogleMap(
       initialCameraPosition: CameraPosition(
           target: center,
           zoom: 15.0
       ),
+      onMapCreated: (controller) {
+        gMapController = controller;
+      },
       onCameraMove: (camPos) {
-        var bounds = gMap.cameraTargetBounds.bounds;
+        var bounds = gMapController.getVisibleRegion();
         var stores = <Store>[]; // = Backend.GetStoresByBound(bounds.northeast, bounds.southwest);
         setState(() {
           _markers = stores.map(_storeToMarker).toList();
