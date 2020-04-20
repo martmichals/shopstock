@@ -2,6 +2,9 @@ import 'package:shopstock/backshop/api_caller.dart';
 import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/store.dart';
 
+import 'coordinate.dart';
+import 'coordinate.dart';
+
 //Class to represent the state of the screen, manage data pulled from the API
 class MapHandler {
   static const ExpansionFactor = 0.2;
@@ -28,27 +31,20 @@ class MapHandler {
     this._southWestScreen = sw;
     this._northEastScreen = ne;
 
-    if (_southWestData == null || _northEastData == null) {
+    if (_storesInArea == null) {
+      print('Data parameters uninitialized, pulling new data');
       await updateArea();
     } else if (_southWestScreen.lat < _southWestData.lat ||
         _southWestScreen.long < _southWestScreen.long ||
         _northEastScreen.lat > _northEastData.lat ||
         _northEastData.long > _northEastData.long) {
+      print('Data parameters outdated, pulling new data');
       await updateArea();
     } else {
-      return _screenStoresLast;
+      print('Data pulled locally already');
     }
 
-    // Sort through stores in _storesInArea and return the ones on screen
-    var screenStores = [];
-    for (final store in _storesInArea) {
-      if (store.location.lat > _southWestScreen.lat &&
-          store.location.long > _southWestScreen.long &&
-          store.location.lat < _northEastScreen.lat &&
-          store.location.long < _northEastScreen.long) screenStores.add(store);
-    }
-    _screenStoresLast = screenStores;
-    return _screenStoresLast;
+    return _getStoresFromMemory();
   }
 
   // Updates the area of the data, and pulls required data for the update
@@ -56,15 +52,32 @@ class MapHandler {
     final expansionLat =
         (_northEastScreen.lat - _southWestScreen.lat) * ExpansionFactor;
     final expansionLong =
-        (_northEastScreen.long - _northEastScreen.long) * ExpansionFactor;
+        (_northEastScreen.long - _southWestScreen.long) * ExpansionFactor;
 
-    _southWestData.setLat(_southWestScreen.lat - expansionLong);
-    _southWestData.setLong(_southWestScreen.long - expansionLong);
-    _northEastData.setLat(_northEastScreen.lat + expansionLat);
-    _northEastData.setLong(_northEastScreen.long + expansionLong);
+    _southWestData = Coordinate(_southWestScreen.lat - expansionLat,
+        _southWestScreen.long - expansionLong);
+    _northEastData = Coordinate(_northEastScreen.lat + expansionLat,
+        _northEastScreen.long + expansionLong);
 
     final pulledList = await getStoresInArea(_southWestData, _northEastData);
-    if (pulledList == null) _storesInArea = new List(0);
+    print('THIS IS THE PULLED LIST: $pulledList');
+    if (pulledList == null) {
+      _storesInArea = new List(0);
+    }else{
+      _storesInArea = pulledList;
+    }
+  }
+
+  // Sort through stores in _storesInArea and return the ones on screen
+  List<Store> _getStoresFromMemory() {
+    var screenStores = <Store>[];
+    for (final store in _storesInArea) {
+      if (store.location.lat > _southWestScreen.lat &&
+          store.location.long > _southWestScreen.long &&
+          store.location.lat < _northEastScreen.lat &&
+          store.location.long < _northEastScreen.long) screenStores.add(store);
+    }
+    return screenStores;
   }
 
   @override
@@ -72,6 +85,7 @@ class MapHandler {
     return 'Southwest Screen Corner: $_southWestScreen\n'
         'Northeast Screen Corner: $_northEastScreen\n'
         'Southwest Data Corner:$_southWestData\n'
-        'Northeast Data Corner:$_northEastData\n';
+        'Northeast Data Corner:$_northEastData\n'
+        '_storesInArea: $_storesInArea\n';
   }
 }

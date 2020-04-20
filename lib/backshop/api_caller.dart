@@ -9,6 +9,7 @@ import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
 
 import '../Item.dart';
+import 'server_response_parsing.dart';
 
 const String ShopstockUrl = 'https://shopstock.live/api/';
 const String TAG = 'apicaller - ';

@@ -7,14 +7,8 @@ import '../Item.dart';
 
 // Method to parse the response from getStoresInArea
 List<Store> parseStoresInArea(String storesJSON) {
-  print(storesJSON);
-
   var storeObjJson = jsonDecode(storesJSON)['stores'] as List;
-  List<Store> stores =
-      storeObjJson.map((storeJson) => Store.fromJson(storeJson)).toList();
-
-  print(stores);
-  return null;
+  return storeObjJson.map((storeJson) => Store.fromJson(storeJson)).toList();
 }
 
 // Method to parse the list of all items

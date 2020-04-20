@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopstock/theme.dart';
+import 'package:shopstock/backshop/session_details.dart';
+import 'package:shopstock/backshop/map_handler.dart';
+import '../backshop/coordinate.dart';
 import '../backshop/store.dart';
 
 class MapExplore extends StatefulWidget {
@@ -75,12 +78,15 @@ class _MapExploreState extends State<MapExplore> {
       onMapCreated: (controller) {
         gMapController = controller;
       },
-      onCameraMove: (camPos) {
-        var bounds = gMapController.getVisibleRegion();
-        var stores = <Store>[]; // = Backend.GetStoresByBound(bounds.northeast, bounds.southwest);
-        setState(() {
-          _markers = stores.map(_storeToMarker).toList();
-        });
+      onCameraIdle: () async {
+        // Code to test mapHandler
+        final sw = Coordinate(41.889687, -87.630233);
+        final ne = Coordinate(42.893952, -87.625658);
+
+        print('Executing mapHandler.getStoresInScreen() method');
+        await Session.mapHandler.getStoresInScreen(sw, ne);
+        print('State of the mapHandler instance: ${Session.mapHandler}');
+        // End code to test mapHandler
       },
       markers: _markers.toSet(),
     );
