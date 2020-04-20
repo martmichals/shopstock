@@ -3,7 +3,6 @@ import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/store.dart';
 
 import 'coordinate.dart';
-import 'coordinate.dart';
 
 //Class to represent the state of the screen, manage data pulled from the API
 class MapHandler {
@@ -14,7 +13,6 @@ class MapHandler {
   Coordinate _southWestData;
   Coordinate _northEastData;
   List<Store> _storesInArea;
-  List<Store> _screenStoresLast;
 
   // Constructor for a blank MapHandler
   MapHandler.blank() {
@@ -23,7 +21,6 @@ class MapHandler {
     _southWestData = null;
     _northEastData = null;
     _storesInArea = null;
-    _screenStoresLast = null;
   }
 
   // Method to get the stores in the screen area, either from API or data in memory
@@ -32,23 +29,20 @@ class MapHandler {
     this._northEastScreen = ne;
 
     if (_storesInArea == null) {
-      print('Data parameters uninitialized, pulling new data');
-      await updateArea();
+      await _updateArea();
     } else if (_southWestScreen.lat < _southWestData.lat ||
         _southWestScreen.long < _southWestScreen.long ||
         _northEastScreen.lat > _northEastData.lat ||
         _northEastData.long > _northEastData.long) {
-      print('Data parameters outdated, pulling new data');
-      await updateArea();
+      await _updateArea();
     } else {
-      print('Data pulled locally already');
     }
 
     return _getStoresFromMemory();
   }
 
   // Updates the area of the data, and pulls required data for the update
-  Future<void> updateArea() async {
+  Future<void> _updateArea() async {
     final expansionLat =
         (_northEastScreen.lat - _southWestScreen.lat) * ExpansionFactor;
     final expansionLong =
@@ -60,7 +54,6 @@ class MapHandler {
         _northEastScreen.long + expansionLong);
 
     final pulledList = await getStoresInArea(_southWestData, _northEastData);
-    print('THIS IS THE PULLED LIST: $pulledList');
     if (pulledList == null) {
       _storesInArea = new List(0);
     }else{
