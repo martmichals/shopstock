@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopstock/main.dart';
 
@@ -10,6 +11,8 @@ class AppColors {
   static final background = Color(0xFF000000);
   static final primary = Color(0xFFFFFFFF);
   static final hint = Color(0xFF666666);
+  static final yes = Color(0xFF66FF66);
+  static final no = Color(0xFFFF6666);
 }
 
 // ignore: non_constant_identifier_names
@@ -98,7 +101,7 @@ class AppSearchBar extends StatelessWidget {
     @required this.onTextChange
   });
 
-  var onTextChange;
+  final Function onTextChange;
 
   @override
   Widget build(BuildContext context) {
@@ -143,4 +146,46 @@ class AppSearchBar extends StatelessWidget {
       ),
     );
   }
+}
+
+class AppItemTile extends StatelessWidget {
+  AppItemTile({
+    @required this.title,
+    @required this.onNo,
+    @required this.onYes
+  });
+
+  final String title;
+  final Function onNo, onYes;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+      trailing: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: AppColors.yes,
+              ),
+              onPressed: onYes,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.cancel,
+                color: AppColors.no,
+              ),
+              onPressed: onNo,
+            ),
+          ],
+          mainAxisSize: MainAxisSize.min
+      ),
+
+    );
+  }
+
 }
