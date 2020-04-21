@@ -12,7 +12,13 @@ List<Store> parseStoresInArea(String storesJSON) {
 }
 
 // Method to parse the list of all items
-List<Item> parseAllItems(String itemJSON) {
+List<Item> parseAllItems(String itemsJson) {
+  print('PARSING ITEMS');
+  var items = jsonDecode(itemsJson)['items'];
+
+  // TODO : Figure out how to parse this dictionary of items
+
+  print(items);
   return null;
 }
 

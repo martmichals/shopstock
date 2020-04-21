@@ -6,6 +6,8 @@ import 'package:shopstock/backshop/map_handler.dart';
 import '../backshop/coordinate.dart';
 import '../backshop/store.dart';
 
+GoogleMapController gMapController;
+
 class MapExplore extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MapExploreState();
@@ -58,7 +60,6 @@ class _MapExploreState extends State<MapExplore> {
     }
 
     GoogleMap gMap;
-    GoogleMapController gMapController;
     gMap = GoogleMap(
       initialCameraPosition: CameraPosition(target: center, zoom: 15.0),
       onMapCreated: (controller) {

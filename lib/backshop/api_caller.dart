@@ -59,7 +59,11 @@ Future<bool> getAndSaveItems() async{
     await for (var contents in response.transform(Utf8Decoder())) {
       responseString += '$contents';
     }
-    return await saveItems(responseString);
+    await saveItems(responseString);
+    // TEST
+    await readItems();
+    // END TEST
+    return true;
   } on SocketException{
     print('$TAG: No connection');
   } on Exception{

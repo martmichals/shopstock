@@ -18,10 +18,10 @@ class App extends StatelessWidget  {
     final ne = Coordinate(42.893952, -87.625658);
     getStoresInArea(sw, ne);
 
-    getAndSaveItems();
-
     print('Creating a blank mapHandler static instance');
     Session.mapHandler = MapHandler.blank();
+
+    getAndSaveItems();
     // End test code for async
 
     return MaterialApp(

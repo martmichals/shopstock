@@ -15,13 +15,7 @@ class MapHandler {
   List<Store> _storesInArea;
 
   // Constructor for a blank MapHandler
-  MapHandler.blank() {
-    _southWestScreen = null;
-    _northEastScreen = null;
-    _southWestData = null;
-    _northEastData = null;
-    _storesInArea = null;
-  }
+  MapHandler.blank();
 
   // Method to get the stores in the screen area, either from API or data in memory
   Future<List<Store>> getStoresInScreen(Coordinate sw, Coordinate ne) async {
@@ -35,7 +29,6 @@ class MapHandler {
         _northEastScreen.lat > _northEastData.lat ||
         _northEastData.long > _northEastData.long) {
       await _updateArea();
-    } else {
     }
 
     return _getStoresFromMemory();

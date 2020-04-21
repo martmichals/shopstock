@@ -1,7 +1,9 @@
-// Class to store all the details that need to be accessible from anywhere
+import 'package:shopstock/backshop/category_assigner.dart';
 import 'map_handler.dart';
 
+// Session details, need to be accessible from anywhere
 class Session{
   static var shopstockAPIKey;
   static MapHandler mapHandler;
+  static List<CategoryAssigner> assigner;
 }
