@@ -1,16 +1,33 @@
-# shopstock
+# Shopstock
 
 A new Flutter application.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+An app developed in the midst of the COVID-19 pandemic. Uses user-reported data in order to provide out-of-stock data on stores in the United States. Meant to limit unnecessary exposure to others in supermarkets by enabling users to ensure the product they are looking for is in stock. <br>
 
-A few resources to get you started if this is your first Flutter project:
+-- Application Under Active Development --
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+##App Setup
+Android Studio:
+File -> New -> Project from Version Control... -> Git
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Copy the following link:
+https://github.com/martmichals/shopstock
+
+##Dependencies
+The app requires the use of the Google Maps API; an API key can be obtained here:<br>
+https://developers.google.com/maps/documentation/javascript/get-api-key<br>
+
+###For Android 
+Enter your key into the space in "strings.xml".
+
+###For iOS 
+TBA
+
+##Core Team
+Andrew Popovich, Trevor Wong, Neha Agarwal, Martin Michalski
+
+##Credit
+Server-side code found here:<br>
+https://github.com/CaptnSisko/shopstock_server<br><br>
