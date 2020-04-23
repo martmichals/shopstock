@@ -6,7 +6,8 @@ An app developed in the midst of the COVID-19 pandemic. Uses user-reported data 
 
 ## App Setup
 Android Studio:
-File -> New -> Project from Version Control... -> Git
+File -> New -> Project from Version Control... -> Git <br>
+Xcode: TBA
 
 Copy the following link:
 https://github.com/martmichals/shopstock
