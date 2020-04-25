@@ -10,6 +10,8 @@ class Store{
   final String _storeAddress;
   final Coordinate _location;
 
+  List<Item> _items;
+
   // Constructor
   Store(this._storeID, this._storeName, this._storeAddress, this._location);
 
@@ -21,7 +23,8 @@ class Store{
   }
 
   // Async Getter Methods
-  Future<List<Item>> getItems() async => await getItemsInStore(_storeID);
+  // TODO: Change this to simply fill _items
+  Future<List<Item>> fillItems() async => await getItemsInStore(_storeID);
 
   // Getter Methods
   int get storeID => _storeID;

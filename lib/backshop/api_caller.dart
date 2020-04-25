@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/report.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
-import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
 
@@ -41,6 +40,7 @@ Future<List<Store>> getStoresInArea(Coordinate southWest, Coordinate northEast) 
 }
 
 // TODO : Implement the API call to get the items in the store
+// TODO : Make sure to call the full constructor
 // Method to get the items in a store
 Future<List<Item>> getItemsInStore(int storeID){
   return null;
@@ -61,11 +61,6 @@ Future<bool> getAndSaveItems() async{
       responseString += '$contents';
     }
     await saveItemsCategories(responseString);
-    // TEST
-    await readItems();
-    await initializeSessionAssigner();
-    print(Session.assigner);
-    // END TEST
     return true;
   } on SocketException{
     print('$TAG: No connection');

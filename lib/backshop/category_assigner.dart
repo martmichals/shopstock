@@ -1,7 +1,5 @@
 // Class to represent an item category
 class CategoryAssigner{
-  // TODO : Change this into a HashMap to speed the lookup process
-  // TODO : Create a factory to create these from dynamic JSON
   Map<int, String> _categories;
 
   // Constructors

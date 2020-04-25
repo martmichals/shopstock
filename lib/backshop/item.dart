@@ -5,8 +5,9 @@ class Item {
   final int _categoryID;
   double _labelling;
 
-  // Constructor
+  // Constructors
   Item(this._itemID, this._name, this._categoryID);
+  Item.full(this._itemID, this._name, this._categoryID, this._labelling);
 
   // Factory to create item from JSON
   factory Item.fromJson(dynamic json){

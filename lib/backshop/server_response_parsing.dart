@@ -16,7 +16,7 @@ List<Item> parseAllItems(String itemsCategoriesJson) {
   return items.map((item) => Item.fromJson(item)).toList();
 }
 
-// Method to initialize an assigner
+// Method to initialize an assigner for item categories
 CategoryAssigner createAssigner(String itemsCategoriesJson) {
   var categories = jsonDecode(itemsCategoriesJson)['item_categories'] as List;
   var assigner = CategoryAssigner.blank();
@@ -25,7 +25,7 @@ CategoryAssigner createAssigner(String itemsCategoriesJson) {
   return assigner;
 }
 
-// Method to paste the detailed return for a particular store
+// Method to parse the detailed return for a particular store
 Store parseStore(String storeJSON) {
   return null;
 }
