@@ -5,6 +5,6 @@ import 'map_handler.dart';
 class Session{
   static var shopstockAPIKey;
   static MapHandler mapHandler;
-  static List<CategoryAssigner> assigner;
+  static CategoryAssigner assigner;
   static bool isConnectionIssue;
 }
