@@ -6,4 +6,5 @@ class Session{
   static var shopstockAPIKey;
   static MapHandler mapHandler;
   static List<CategoryAssigner> assigner;
+  static bool isConnectionIssue;
 }

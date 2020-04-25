@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
 
-import '../Item.dart';
+import 'package:shopstock/backshop/item.dart';
 
 const ItemsFilename = 'items.json';
 const ItemCategoriesFilename = 'item_categories.json';
@@ -11,7 +11,7 @@ const ItemCategoriesFilename = 'item_categories.json';
 /*  Method to save the list of items
     Returns true if the write was a success, false otherwise
  */
-Future<bool> saveItems(String itemsJson) async {
+Future<bool> saveItemsCategories(String itemsJson) async {
   try {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$ItemsFilename');
@@ -31,6 +31,7 @@ Future<List<Item>> readItems() async{
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$ItemsFilename');
     String json = await file.readAsString();
+    print(json);
     return parseAllItems(json);
   }on FileSystemException catch(err){
     print('File system issue.\n${err.toString()}');

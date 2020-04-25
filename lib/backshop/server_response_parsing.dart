@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/store.dart';
+import 'package:shopstock/backshop/item.dart';
 
-import '../Item.dart';
+
 
 // Method to parse the response from getStoresInArea
 List<Store> parseStoresInArea(String storesJSON) {
@@ -12,14 +12,12 @@ List<Store> parseStoresInArea(String storesJSON) {
 }
 
 // Method to parse the list of all items
-List<Item> parseAllItems(String itemsJson) {
+List<Item> parseAllItems(String itemsCategoriesJson) {
   print('PARSING ITEMS');
-  var items = jsonDecode(itemsJson)['items'];
+  var itemsList = List<Item>();
+  var items = jsonDecode(itemsCategoriesJson)['items'] as List;
+  return items.map((item) => Item.fromJson(item)).toList();
 
-  // TODO : Figure out how to parse this dictionary of items
-
-  print(items);
-  return null;
 }
 
 // Method to paste the detailed return for a particular store

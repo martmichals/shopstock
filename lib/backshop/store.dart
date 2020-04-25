@@ -1,6 +1,6 @@
 import 'package:shopstock/backshop/coordinate.dart';
 
-import '../Item.dart';
+import 'package:shopstock/backshop/item.dart';
 import 'api_caller.dart';
 
 // Class to represent a Store

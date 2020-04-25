@@ -8,7 +8,7 @@ import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
 
-import '../Item.dart';
+import 'package:shopstock/backshop/item.dart';
 import 'server_response_parsing.dart';
 
 const String ShopstockUrl = 'https://shopstock.live/api/';
@@ -59,7 +59,7 @@ Future<bool> getAndSaveItems() async{
     await for (var contents in response.transform(Utf8Decoder())) {
       responseString += '$contents';
     }
-    await saveItems(responseString);
+    await saveItemsCategories(responseString);
     // TEST
     await readItems();
     // END TEST
