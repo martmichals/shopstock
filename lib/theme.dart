@@ -11,6 +11,7 @@ class AppColors {
   static final background = Color(0xFF000000);
   static final primary = Color(0xFFFFFFFF);
   static final hint = Color(0xFF666666);
+  static final maybe = Color(0xFFFFFF66);
   static final yes = Color(0xFF66FF66);
   static final no = Color(0xFFFF6666);
 }

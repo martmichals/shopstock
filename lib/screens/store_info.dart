@@ -61,12 +61,7 @@ class _StoreInfoState extends State<StoreInfo> {
                       borderRadius: BorderRadius.circular(1000),
                     ),
                     color: (confidence) {
-                      const double SAT = 0.6;
-                      double hue = ((confidence + 1) / 2);
-                      double red = sqrt(1 - (hue * SAT));
-                      double green = sqrt((1 - SAT) + hue * SAT);
-                      double blue = (1 - SAT);
-                      return Color.fromARGB(0xFF, (red * 0xff).round(), (green * 0xff).round(), (blue * 0xff).round());
+                      return Color.lerp(AppColors.maybe, confidence > 0 ? AppColors.yes : AppColors.no, confidence.abs());
                     } (items[item].confidence)
                 ),
               ),
