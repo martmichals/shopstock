@@ -6,6 +6,7 @@ import 'map_handler.dart';
 class Session{
   // Static variables for auth and security
   static var shopstockAPIKey;
+  static var isLongTermKey; // TODO: Initialize this in the log in process
 
   // Static variables required for each session
   static MapHandler mapHandler;

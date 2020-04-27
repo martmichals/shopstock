@@ -5,10 +5,10 @@ import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/item.dart';
 import 'package:shopstock/backshop/session_details.dart';
 
-// Filename for file that stores all item and category information
+// Filenames
 const ItemsCategoriesFilename = 'items_categories.json';
+const KeyFilename = 'shopstock_key.txt';
 
-// TODO : Test the methods below
 /*  Method to save the list of items
     Returns true if the write was a success, false otherwise
  */
@@ -20,6 +20,21 @@ Future<bool> saveItemsCategories(String itemsCategoriesJson) async {
     return true;
   } on Exception {
     print('Saving of $ItemsCategoriesFilename was a failure');
+    return false;
+  }
+}
+
+/*  Method to save the API key for the server to a local file
+    Returns true on success
+ */
+Future<bool> saveKey() async{
+  try{
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$KeyFilename');
+    await file.writeAsString(Session.shopstockAPIKey);
+    return true;
+  } on Exception {
+    print('Failed to write $KeyFilename to disk');
     return false;
   }
 }
@@ -62,3 +77,29 @@ Future<bool> initializeSessionAssigner() async{
     return false;
   }
 }
+
+/*  Method to read from disk to initialize the API key
+    Returns true on success
+ */
+Future<bool> initializeSessionKey() async{
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$KeyFilename');
+
+    final key = await file.readAsString();
+    if(key.length == 0)
+      return false;
+
+    Session.shopstockAPIKey = key;
+    return true;
+  }on FileSystemException catch(err){
+    print('File system issue.\n${err.toString()}');
+    return false;
+  }on Exception {
+    print('Failed to read $KeyFilename from disk');
+    return false;
+  }
+}
+
+
+
