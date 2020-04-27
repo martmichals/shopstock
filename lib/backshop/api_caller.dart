@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shopstock/backshop/coordinate.dart';
+import 'package:shopstock/backshop/report.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
+
+import 'package:shopstock/backshop/item.dart';
+import 'server_response_parsing.dart';
 
 const String ShopstockUrl = 'https://shopstock.live/api/';
 const String TAG = 'apicaller - ';
@@ -35,6 +39,13 @@ Future<List<Store>> getStoresInArea(Coordinate southWest, Coordinate northEast) 
   }
 }
 
+// TODO : Implement the API call to get the items in the store
+// TODO : Make sure to call the full constructor
+// Method to get the items in a store
+Future<List<Item>> getItemsInStore(int storeID){
+  return null;
+}
+
 /*  Method to get and save the list of all items
     Returns true if the pull and save were successful
  */
@@ -49,11 +60,17 @@ Future<bool> getAndSaveItems() async{
     await for (var contents in response.transform(Utf8Decoder())) {
       responseString += '$contents';
     }
-    return await saveItems(responseString);
+    await saveItemsCategories(responseString);
+    return true;
   } on SocketException{
     print('$TAG: No connection');
   } on Exception{
     print('$TAG: App error in getAndSaveItems');
   }
   return false;
+}
+
+// TODO: Implement a method to send report data
+Future<bool>sendReport(Report report){
+  return null;
 }

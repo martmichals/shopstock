@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopstock/theme.dart';
+import 'package:shopstock/backshop/session_details.dart';
+import 'package:shopstock/backshop/map_handler.dart';
+import '../backshop/coordinate.dart';
 import '../backshop/store.dart';
+
+GoogleMapController gMapController;
 
 class MapExplore extends StatefulWidget {
   @override
@@ -10,7 +15,6 @@ class MapExplore extends StatefulWidget {
 
 class _MapExploreState extends State<MapExplore> {
   var _markers = <Marker>[];
-  GoogleMapController gMapController;
 
   void _onMarkerTap() {
     Navigator.pushNamed(context, "/map_explore/store_info");
@@ -53,7 +57,6 @@ class _MapExploreState extends State<MapExplore> {
               (_tempMarkers[i].position.latitude / _tempMarkers.length),
           center.longitude +
               (_tempMarkers[i].position.longitude / _tempMarkers.length));
-      _markers = _tempMarkers;
     }
 
     GoogleMap gMap;
@@ -63,7 +66,7 @@ class _MapExploreState extends State<MapExplore> {
         gMapController = controller;
       },
       onCameraIdle: () async {
-        /*final bounds = await gMapController.getVisibleRegion();
+        final bounds = await gMapController.getVisibleRegion();
 
         final sw = Coordinate.fromLatLng(bounds.southwest);
         final ne = Coordinate.fromLatLng(bounds.northeast);
@@ -74,7 +77,7 @@ class _MapExploreState extends State<MapExplore> {
 
         setState(() {
           _markers = stores.map(_storeToMarker).toList();
-        });*/
+        });
       },
       markers: _markers.toSet(),
     );
