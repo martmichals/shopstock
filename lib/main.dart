@@ -34,7 +34,6 @@ class App extends StatelessWidget  {
         "/map_explore": (context) => MapExplore(),
         "/map_explore/store_info" : (context) => StoreInfo(),
         "/map_explore/store_info/report" : (context) => Report(),
-        "/map_explore/store_info/report/infinity" : (context) => Infinity()
       },
     );
   }

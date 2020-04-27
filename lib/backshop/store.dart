@@ -10,7 +10,7 @@ class Store{
   final String _storeAddress;
   final Coordinate _location;
 
-  List<Item> _items;
+  List<Item> _items = <Item>[];
 
   // Constructor
   Store(this._storeID, this._storeName, this._storeAddress, this._location);
@@ -31,6 +31,7 @@ class Store{
   String get storeName => _storeName;
   String get storeAddress => _storeAddress;
   Coordinate get location => _location;
+  List<Item> get items => _items;
 
   @override
   String toString() => 'Store Name: $_storeName || Location:$_storeAddress || '

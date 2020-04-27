@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shopstock/main.dart';
 
 const PADDING = 16.0;
 const FONT_SIZE = 24.0;
@@ -14,6 +13,7 @@ class AppColors {
   static final maybe = Color(0xFFFFFF66);
   static final yes = Color(0xFF66FF66);
   static final no = Color(0xFFFF6666);
+  static final transparent = Color(0x00000000);
 }
 
 // ignore: non_constant_identifier_names
@@ -126,10 +126,10 @@ class AppSearchBar extends StatelessWidget {
                   ),
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.accentDark)
+                        borderSide: BorderSide(color: AppColors.transparent)
                     ),
                     focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.accentDark)
+                        borderSide: BorderSide(color: AppColors.transparent)
                     ),
                   ),
                   onChanged: onTextChange

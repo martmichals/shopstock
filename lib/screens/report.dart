@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/item_report_list.dart';
 import '../theme.dart';
 
@@ -99,10 +100,10 @@ class _ReportState extends State<Report> {
 
   @override
   Widget build(BuildContext context) {
-    print("HELLO");
+    final Store store = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Report"),
+        title: Text("Report: " + store.storeName),
         backgroundColor: Theme.of(context).accentColor,
       ),
       body: Column(
@@ -110,7 +111,7 @@ class _ReportState extends State<Report> {
           _buildReportList(),
           Center(
             child: AppButton(
-              text: "Add Items",
+              text: "Add Item Reports",
               onPressed: () {
                 showDialog(
                     context: context,
@@ -173,7 +174,7 @@ class _ReportState extends State<Report> {
               child: AppButton(
                 text: "Report",
                 onPressed: () {
-                  Navigator.pushNamed(context, "/map_explore/store_info/report/infinity");
+                  Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
                 },
               )
           )

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/theme.dart';
-import 'package:shopstock/backshop/item.dart';
 
 class StoreInfo extends StatefulWidget {
   @override
@@ -10,32 +10,18 @@ class StoreInfo extends StatefulWidget {
 }
 
 class _StoreInfoState extends State<StoreInfo> {
-  final items = <Item>[
-    Item(1, "Bread", 1),
-    Item(1, "Bread", 1),
-    Item(1, "Bread", 1),
-    Item(1, "Eggs", 1),
-    Item(1, "Eggs", 1),
-    Item(1, "Eggs", 1),
-    Item(1, "Cheese", 1),
-    Item(1, "Cheese", 1),
-    Item(1, "Cheese", 1),
-    Item(1, "Cheese", 1),
-    Item(1, "Cheese", 1),
-  ];
-  String search = "";
+    String search = "";
 
-  ListView _buildList() {
-
+  ListView _buildList(Store store) {
     return ListView.builder(itemBuilder: (context, item) {
-      for(var item in items){
+      for(var item in store.items){
         item.setLabelling(0.5);
       }
 
-      if (item < items.length && items[item].name.toLowerCase().contains(search.toLowerCase())){
+      if (item < store.items.length && store.items[item].name.toLowerCase().contains(search.toLowerCase())){
         return ListTile(
           title: Text(
-              items[item].name,
+              store.items[item].name,
               style: Theme.of(context).textTheme.bodyText1
           ),
           trailing: Container(
@@ -50,7 +36,7 @@ class _StoreInfoState extends State<StoreInfo> {
                         "In Stock"
                       ];
                       return outs[min((((confidence + 1) / 2) * outs.length).floor(), outs.length - 1)];
-                    }(items[item].labelling),
+                    }(store.items[item].labelling),
                     style: TextStyle(
                       color: AppColors.background,
                     )
@@ -68,7 +54,7 @@ class _StoreInfoState extends State<StoreInfo> {
                   double green = sqrt((1 - SAT) + hue * SAT);
                   double blue = (1 - SAT);
                   return Color.fromARGB(0xFF, (red * 0xff).round(), (green * 0xff).round(), (blue * 0xff).round());
-                } (items[item].labelling)
+                } (store.items[item].labelling)
             ),
           ),
         );
@@ -85,9 +71,10 @@ class _StoreInfoState extends State<StoreInfo> {
 
   @override
   Widget build(BuildContext context) {
+    final Store store = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Store Info"),
+        title: Text(store.storeName),
         backgroundColor: Theme.of(context).accentColor,
       ),
       body: Column(
@@ -99,13 +86,13 @@ class _StoreInfoState extends State<StoreInfo> {
             padding: EdgeInsets.all(PADDING),
           ),
           Expanded(
-            child: _buildList(),
+            child: _buildList(store),
           ),
           Center(
               child: AppButton(
                 text: "Report",
                 onPressed: () {
-                  Navigator.pushNamed(context, "/map_explore/store_info/report");
+                  Navigator.pushNamed(context, "/map_explore/store_info/report", arguments: store);
                 },
               )
           )
