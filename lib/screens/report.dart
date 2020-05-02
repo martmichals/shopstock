@@ -23,51 +23,71 @@ class _ReportState extends State<Report> {
     var statuses = list.map((x) {
       return x.status;
     }).toList();
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: names.length,
-        itemBuilder: (context, item) {
-          return ListTile(
-            title: Text(
-                names[item],
-                style: Theme.of(context).textTheme.bodyText1
+    if (names.length == 0) {
+      return ListView(
+        children: <Widget>[
+          Padding(
+            child: Center(
+              child: Text(
+                  "Add Item Report",
+                  style: Theme.of(context).textTheme.bodyText1),
             ),
-            trailing: Row(
-                children: <Widget>[
-                  Container(
-                    child: Padding(
-                        child: Text(
-                            (statuses[item] > 0 ? "In" : "Out of") + " Stock",
-                            style: TextStyle(
-                              color: AppColors.background,
-                            )
-                        ),
-                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4)
+            padding: EdgeInsets.all(PADDING),
+          ),
+        ],
+      );
+    }
+    else {
+      return ListView.builder(
+          shrinkWrap: true,
+          itemCount: names.length,
+          itemBuilder: (context, item) {
+            return ListTile(
+              title: Text(
+                  names[item],
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText1
+              ),
+              trailing: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Padding(
+                          child: Text(
+                              (statuses[item] > 0 ? "In" : "Out of") + " Stock",
+                              style: TextStyle(
+                                color: AppColors.background,
+                              )
+                          ),
+                          padding: EdgeInsets.fromLTRB(8, 4, 8, 4)
+                      ),
+                      decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(1000),
+                          ),
+                          color: (statuses[item] > 0 ? AppColors.yes : AppColors
+                              .no)
+                      ),
                     ),
-                    decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(1000),
-                        ),
-                        color: (statuses[item] > 0 ? AppColors.yes : AppColors.no)
+                    IconButton(
+                      icon: Icon(
+                        Icons.cancel,
+                        color: AppColors.accent,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          itemReportList.removeReport(names[item]);
+                        });
+                      },
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.cancel,
-                      color: AppColors.accent,
-                    ),
-                    onPressed: (){
-                      setState(() {
-                        itemReportList.removeReport(names[item]);
-                      });
-                    },
-                  ),
-                ],
-                mainAxisSize: MainAxisSize.min
-            ),
-          );
-        }
-    );
+                  ],
+                  mainAxisSize: MainAxisSize.min
+              ),
+            );
+          }
+      );
+    }
   }
 
   ListView _buildSelList(String search, setSubState) {
