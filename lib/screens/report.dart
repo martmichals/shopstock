@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/item_report_list.dart';
 import '../theme.dart';
@@ -107,46 +108,47 @@ class _ReportState extends State<Report> {
         backgroundColor: Theme.of(context).accentColor,
       ),
       body: Column(
-        children: <Widget>[
-          _buildReportList(),
-          Center(
-            child: AppButton(
-              text: "Add Item Reports",
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      String search = "";
-                      return StatefulBuilder(
-                        builder: (context, setSubState) {
-                          return Dialog(
-                            child: Column(
-                              children: <Widget>[
-                                AppSearchBar(
-                                  onTextChange: (string) {
-                                    setSubState(() {
-                                      search = string;
-                                    });
-                                  },
-                                ),
-                                _buildSelList(search, setSubState),
-                              ],
-                            ),
-                            backgroundColor: Color.fromARGB(0, 0, 0, 0),
-                          );
-                        },
-                      );
-                    });
-              },
-            ),
-          ),
-          Text(
-              "Time of visit:",
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          Expanded(
-            child: ListView(
               children: <Widget>[
+                Expanded(
+                  child: _buildReportList(),
+                ),
+                Center(
+                  child: AppButton(
+                    text: "Add Item Reports",
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            String search = "";
+                            return StatefulBuilder(
+                              builder: (context, setSubState) {
+                                return Dialog(
+                                  child: Column(
+                                      children: <Widget>[
+                                        AppSearchBar(
+                                          onTextChange: (string) {
+                                            setSubState(() {
+                                              search = string;
+                                            });
+                                          },
+                                        ),
+                                        Expanded(
+                                          child: _buildSelList(search, setSubState),
+                                        ),
+                                      ],
+                                    ),
+                                  backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                                );
+                              },
+                            );
+                          });
+                    },
+                  ),
+                ),
+                Text(
+                  "Time of visit:",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 SizedBox(
                   child: CupertinoTheme(
                     child: CupertinoDatePicker(
@@ -167,19 +169,16 @@ class _ReportState extends State<Report> {
                   ),
                   height: 150,
                 ),
+                Center(
+                    child: AppButton(
+                      text: "Report",
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
+                      },
+                    )
+                )
               ],
             ),
-          ),
-          Center(
-              child: AppButton(
-                text: "Report",
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
-                },
-              )
-          )
-        ],
-      ),
     );
   }
 }

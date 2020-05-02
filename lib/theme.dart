@@ -185,8 +185,6 @@ class AppItemTile extends StatelessWidget {
           ],
           mainAxisSize: MainAxisSize.min
       ),
-
     );
   }
-
 }
