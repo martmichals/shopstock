@@ -1,37 +1,19 @@
 import 'package:shopstock/item_report.dart';
 
+import 'backshop/session_details.dart';
+
 class ItemReportList {
-  static final itemNames = {
-    "Bread",
-    "Milk",
-    "Cheese",
-    "Yogurt",
-    "Ceral",
-    "Bagels",
-    "Apples",
-    "Bananas",
-    "Hot Dogs",
-    "Granola",
-    "Chicken",
-    "Lettuce",
-    "Pickles",
-    "Hamburger",
-    "Steak",
-    "Pasta",
-    "Tomatos",
-    "Carrots"
-  };
   var itemList;
 
   ItemReportList() {
-    itemList = itemNames.map((x) {
+    itemList = Session.allItems.map((x) {
       return ItemReport(x, 0);
     }).toList();
   }
 
   void setReport(String name, bool stock) {
     for (var item in itemList) {
-      if (item.name == name) {
+      if (item.item.name == name) {
         item.status = (stock ? 1 : -1);
         return;
       }
@@ -40,7 +22,7 @@ class ItemReportList {
 
   void removeReport(String name) {
     for (var item in itemList) {
-      if (item.name == name) {
+      if (item.item.name == name) {
         item.status = 0;
         return;
       }
@@ -56,6 +38,6 @@ class ItemReportList {
   }
 
   int getSize() {
-    return itemNames.length;
+    return itemList.length;
   }
 }

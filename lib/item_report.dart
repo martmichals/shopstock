@@ -1,9 +1,11 @@
+import 'backshop/item.dart';
+
 class ItemReport {
-  String name;
+  Item item;
   int status;
 
-  ItemReport(String name, int status) {
-    this.name = name;
+  ItemReport(Item item, int status) {
+    this.item = item;
     this.status = status;
   }
 }

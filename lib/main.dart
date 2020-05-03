@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/api_caller.dart';
+import 'package:shopstock/backshop/local_data_handler.dart';
 import 'backshop/coordinate.dart';
 import 'backshop/map_handler.dart';
 import 'backshop/session_details.dart';
@@ -20,9 +21,9 @@ class App extends StatelessWidget  {
 
     print('Creating a blank mapHandler static instance');
     Session.mapHandler = MapHandler.blank();
-    Session.allItems = null;
 
     getAndSaveItems();
+    readItems();
     // End test code for async
 
     return MaterialApp(

@@ -12,7 +12,7 @@ class Session{
   // Static variables required for each session
   static MapHandler mapHandler;
   static CategoryAssigner assigner;
-  static List<Item> allItems;
+  static List<Item> allItems = <Item>[];
 
   // Static variables sometimes used in a session
   static Report userReport;

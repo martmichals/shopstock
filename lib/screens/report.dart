@@ -4,6 +4,7 @@ import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/item_report_list.dart';
 import 'package:shopstock/backshop/report.dart' as backendReport;
+import '../item_report.dart';
 import '../theme.dart';
 
 class Report extends StatefulWidget {
@@ -13,13 +14,14 @@ class Report extends StatefulWidget {
 
 class _ReportState extends State<Report> {
   ItemReportList itemReportList = ItemReportList();
+  DateTime visitTime = DateTime.now();
 
   ListView _buildReportList() {
     var list = itemReportList.getList().where((x) {
       return  x.status != 0;
     });
     var names = list.map((x) {
-      return x.name;
+      return x.item.name;
     }).toList();
     var statuses = list.map((x) {
       return x.status;
@@ -93,9 +95,9 @@ class _ReportState extends State<Report> {
 
   ListView _buildSelList(String search, setSubState) {
     var names = itemReportList.getList().where((x) {
-      return x.name.toLowerCase().contains(search.toLowerCase()) && x.status == 0;
+      return x.item.name.toLowerCase().contains(search.toLowerCase()) && x.status == 0;
     }).toList().map((x) {
-      return x.name;
+      return x.item.name;
     }).toList();
     return ListView.builder(
         shrinkWrap: true,
@@ -174,7 +176,9 @@ class _ReportState extends State<Report> {
                   child: CupertinoTheme(
                     child: CupertinoDatePicker(
                       onDateTimeChanged: (dateTime) {
-
+                        setState(() {
+                          visitTime = dateTime;
+                        });
                       },
                       mode: CupertinoDatePickerMode.dateAndTime,
                       minimumDate: DateTime.now().add(new Duration(days: -7)),
@@ -196,9 +200,10 @@ class _ReportState extends State<Report> {
                       onPressed: () {
                         // Create the report
                         Session.userReport = backendReport.Report(store);
-                        
-
-
+                        for (ItemReport itemReport in itemReportList.itemList) {
+                          Session.userReport.addNewLabel(itemReport.item, itemReport.status);
+                        }
+                        Session.userReport.setTime(visitTime);
                         Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
                       },
                     )
