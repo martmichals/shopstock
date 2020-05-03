@@ -59,7 +59,7 @@ class AppButton extends StatelessWidget {
             text.toUpperCase(),
             style: Theme.of(context).textTheme.button,
           ),
-          padding: EdgeInsets.all(PADDING),
+          padding: EdgeInsets.fromLTRB(PADDING / 2, PADDING, PADDING / 2, PADDING),
         ),
         onPressed: onPressed,
         shape: RoundedRectangleBorder(
