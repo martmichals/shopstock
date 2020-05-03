@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shopstock/backshop/api_caller.dart';
+import 'package:shopstock/backshop/report.dart';
 import 'package:shopstock/theme.dart';
 import 'package:shopstock/backshop/session_details.dart';
 import '../backshop/coordinate.dart';
@@ -22,6 +24,14 @@ class _MapExploreState extends State<MapExplore> {
       markerId: MarkerId(store.storeID.toString()),
       position: location,
       infoWindow: InfoWindow(title: store.storeName, onTap: () {
+
+        // TODO : Delete the following test code
+        Session.userReport = Report(store);
+        print('Testing toJson Method');
+        sendReport();
+        // TODO : End here
+
+
         Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
       }),
     );

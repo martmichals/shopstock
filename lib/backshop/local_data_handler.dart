@@ -47,8 +47,8 @@ Future<List<Item>> readItems() async{
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$ItemsCategoriesFilename');
     String json = await file.readAsString();
-    print(json);
-    return parseAllItems(json);
+    Session.allItems = parseAllItems(json);
+    return Session.allItems;
   }on FileSystemException catch(err){
     print('File system issue.\n${err.toString()}');
     return null;

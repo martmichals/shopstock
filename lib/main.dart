@@ -11,7 +11,7 @@ void main() => runApp(App());
 
 class App extends StatelessWidget  {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
 
     // Test code for async
     final sw = Coordinate(41.889687, -87.630233);
@@ -20,6 +20,7 @@ class App extends StatelessWidget  {
 
     print('Creating a blank mapHandler static instance');
     Session.mapHandler = MapHandler.blank();
+    Session.allItems = null;
 
     getAndSaveItems();
     // End test code for async
@@ -31,6 +32,7 @@ class App extends StatelessWidget  {
       routes: {
         "/log_in": (context) => LogIn(),
         "/log_in/sign_up" : (context) => SignUp(),
+        "/log_in/sign_up/tutorial" : (context) => Tutorial(),
         "/map_explore": (context) => MapExplore(),
         "/map_explore/store_info" : (context) => StoreInfo(),
         "/map_explore/store_info/report" : (context) => Report(),
