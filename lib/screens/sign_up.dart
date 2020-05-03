@@ -11,14 +11,13 @@ class _SignUpScreenState extends State<SignUp> {
   bool _autoValidate = false; //form will begin auto validating after unsuccessful submit
 
   //controllers to retrieve text field values
-  final TextEditingController _firstNameControl = TextEditingController();
-  final TextEditingController _lastNameControl = TextEditingController();
+  final TextEditingController _nicknameControl = TextEditingController();
   final TextEditingController _emailControl = TextEditingController();
   final TextEditingController _passwordControl = TextEditingController();
   final TextEditingController _confirmPasswordControl = TextEditingController();
 
   //save values--set after button onPressed
-  String _firstName, _lastName, _email, _password;
+  String _nickName, _email, _password;
 
   //default textField style
   //here as to not mess with theme.dart
@@ -65,8 +64,7 @@ class _SignUpScreenState extends State<SignUp> {
         autovalidate: _autoValidate,
         child: Column(
           children: <Widget>[
-            _buildFirstName(),
-            _buildLastName(),
+            _buildNickname(),
             _buildEmail(),
             _buildPassword(),
             _buildConfirmPassword()
@@ -75,12 +73,12 @@ class _SignUpScreenState extends State<SignUp> {
     );
   }
 
-  Widget _buildFirstName() {
+  Widget _buildNickname() {
     return Container(
       child: TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            labelText: "First Name",
+            labelText: "Nickname",
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).primaryColor)
             ),
@@ -89,7 +87,7 @@ class _SignUpScreenState extends State<SignUp> {
             )
         ),
         style: fieldStyle,
-        controller: _firstNameControl,
+        controller: _nicknameControl,
         //rejects empty field
         validator: (value) {
           if (value.isEmpty) {
@@ -98,36 +96,7 @@ class _SignUpScreenState extends State<SignUp> {
           return null;
         },
         onSaved: (value) {
-          _firstName = value;
-        },
-      ),
-    );
-  }
-
-  Widget _buildLastName() {
-    return Container(
-      child: TextFormField(
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-            labelText: "Last Name",
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).primaryColor)
-            ),
-            enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.accentDark)
-            )
-        ),
-        style: fieldStyle,
-        controller: _lastNameControl,
-        //rejects empty field
-        validator: (value) {
-          if (value.isEmpty) {
-            return "Field cannot be empty";
-          }
-          return null;
-        },
-        onSaved: (value) {
-          _lastName = value;
+          _nickName = value;
         },
       ),
     );
