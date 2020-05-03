@@ -24,4 +24,37 @@ class Report{
   Store get store => _store;
   Map<int, int> get labellings => _labellings;
   DateTime get time => _time;
+
+  // Method to convert the object to a json string
+  String toJson(){
+    List<int> inStockIds = [];
+    List<int> outOfStockIds = [];
+
+    // TODO: Make sure that the proper items are being labelled
+    _labellings.forEach((key, value) => value == 1 ? inStockIds.add(key) : outOfStockIds.add(key));
+
+    // Iterate over the lists of item ids
+    String str = '{\"in_stock_items\": [';
+    for(var i = 0; i < inStockIds.length; i++){
+      str += inStockIds[i] as String;
+      if(i != inStockIds.length - 1)
+       str += ', ';
+    }
+    str += '], \"no_stock_items\": [';
+    for(var i = 0; i < outOfStockIds.length; i++){
+      str += outOfStockIds[i] as String;
+      if(i != outOfStockIds.length - 1)
+        str += ', ';
+    }
+    str += '], \"store_id\": ${store.storeID}, \"timestamp\": ';
+
+    int secondsSinceEpoch;
+    if(_time != null)
+      secondsSinceEpoch = _time.millisecondsSinceEpoch / 1000 as int;
+    else
+      return null;
+
+    str += '$secondsSinceEpoch}';
+    return str;
+  }
 }
