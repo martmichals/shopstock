@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shopstock/backshop/coordinate.dart';
+import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/item_report_list.dart';
+import 'package:shopstock/backshop/report.dart' as backendReport;
 import '../theme.dart';
 
 class Report extends StatefulWidget {
@@ -193,6 +194,11 @@ class _ReportState extends State<Report> {
                     child: AppButton(
                       text: "Report",
                       onPressed: () {
+                        // Create the report
+                        Session.userReport = backendReport.Report(store);
+                        
+
+
                         Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
                       },
                     )
