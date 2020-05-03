@@ -7,7 +7,19 @@ class ItemReportList {
     "Cheese",
     "Yogurt",
     "Ceral",
-    "Bagels"
+    "Bagels",
+    "Apples",
+    "Bananas",
+    "Hot Dogs",
+    "Granola",
+    "Chicken",
+    "Lettuce",
+    "Pickles",
+    "Hamburger",
+    "Steak",
+    "Pasta",
+    "Tomatos",
+    "Carrots"
   };
   var itemList;
 

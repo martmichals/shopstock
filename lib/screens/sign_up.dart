@@ -26,7 +26,7 @@ class SignUp extends StatelessWidget {
               child: AppButton(
                 text: "Sign Up",
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, "/log_in/sign_up/tutorial");
                 },
               )
           ),

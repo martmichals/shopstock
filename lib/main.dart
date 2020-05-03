@@ -31,6 +31,7 @@ class App extends StatelessWidget  {
       routes: {
         "/log_in": (context) => LogIn(),
         "/log_in/sign_up" : (context) => SignUp(),
+        "/log_in/sign_up/tutorial" : (context) => Tutorial(),
         "/map_explore": (context) => MapExplore(),
         "/map_explore/store_info" : (context) => StoreInfo(),
         "/map_explore/store_info/report" : (context) => Report(),
