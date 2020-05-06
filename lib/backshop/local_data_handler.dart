@@ -1,28 +1,10 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:shopstock/backshop/server_response_parsing.dart';
 
-import 'package:shopstock/backshop/item.dart';
 import 'package:shopstock/backshop/session_details.dart';
 
 // Filenames
-const ItemsCategoriesFilename = 'items_categories.json';
 const KeyFilename = 'shopstock_key.txt';
-
-/*  Method to save the list of items
-    Returns true if the write was a success, false otherwise
- */
-Future<bool> saveItemsCategories(String itemsCategoriesJson) async {
-  try {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$ItemsCategoriesFilename');
-    await file.writeAsString(itemsCategoriesJson);
-    return true;
-  } on Exception {
-    print('Saving of $ItemsCategoriesFilename was a failure');
-    return false;
-  }
-}
 
 /*  Method to save the API key for the server to a local file
     Returns true on success
@@ -35,45 +17,6 @@ Future<bool> saveKey() async{
     return true;
   } on Exception {
     print('Failed to write $KeyFilename to disk');
-    return false;
-  }
-}
-
-/*  Method to read the list of items from the disk
-    Returns the string from the file if successful, null otherwise
- */
-Future<List<Item>> readItems() async{
-  try {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$ItemsCategoriesFilename');
-    String json = await file.readAsString();
-    Session.allItems = parseAllItems(json);
-    return Session.allItems;
-  }on FileSystemException catch(err){
-    print('File system issue.\n${err.toString()}');
-    return null;
-  }on Exception {
-    print('Failed to read $ItemsCategoriesFilename from disk');
-    return null;
-  }
-}
-
-/*  Method to read from disk and initialize Session.assigner
-    Returns true on success
- */
-Future<bool> initializeSessionAssigner() async{
-  try {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$ItemsCategoriesFilename');
-    String json = await file.readAsString();
-
-    Session.assigner = createAssigner(json);
-    return true;
-  }on FileSystemException catch(err){
-    print('File system issue.\n${err.toString()}');
-    return false;
-  }on Exception {
-    print('Failed to read $ItemsCategoriesFilename from disk');
     return false;
   }
 }
@@ -101,5 +44,28 @@ Future<bool> initializeSessionKey() async{
   }
 }
 
+/* Method to get the time since the key was saved
+   Returns the time in hours since the last operation performed on the file,
+   null otherwise
+ */
+Future<int> getTimeSinceKeyUpdate() async{
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File('${directory.path}/$KeyFilename');
+
+  try {
+    final lastModified = await file.lastModified();
+    final diff = lastModified.difference(DateTime.now());
+
+    if(diff != null)
+      return diff.inHours;
+    return null;
+  }on FileSystemException{
+    print('There was a file system exception when checking the key update time');
+    return null;
+  }on Exception{
+    print('There was an exception when checking key update time');
+    return null;
+  }
+}
 
 

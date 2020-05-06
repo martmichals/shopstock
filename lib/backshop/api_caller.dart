@@ -6,7 +6,6 @@ import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
-import 'package:shopstock/backshop/local_data_handler.dart';
 import 'package:shopstock/backshop/item.dart';
 import 'server_response_parsing.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +50,7 @@ Future<List<Item>> getItemsInStore(int storeID) {
 /*  Method to get and save the list of all items
     Returns true if the pull and save were successful
  */
-Future<bool> getAndSaveItems() async {
+Future<bool> getItemsCategories() async {
   final requestUrl = '${ShopstockUrl}get_items';
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
@@ -62,7 +61,10 @@ Future<bool> getAndSaveItems() async {
     await for (var contents in response.transform(Utf8Decoder())) {
       responseString += '$contents';
     }
-    await saveItemsCategories(responseString);
+    // Initialize Session.assigner as well as the list of all items
+    Session.assigner = createAssigner(responseString);
+    Session.allItems = parseAllItems(responseString);
+
     return true;
   } on SocketException {
     print('$TAG: No connection');
