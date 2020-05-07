@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LogIn> {
     fontSize: 16.0,
   );
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -47,7 +48,8 @@ class _LoginScreenState extends State<LogIn> {
                 ),
               ),
               _buildTextFields(),
-              SizedBox(height: 20.0),
+              //SizedBox(height: 20.0),
+              _buildForgotPasswordButton(),
               _buildRememberMe(),
               _buildLogInButton(),
               _buildSignUpButton(),
@@ -125,6 +127,25 @@ class _LoginScreenState extends State<LogIn> {
     );
   }
 
+  Widget _buildForgotPasswordButton() {
+    return Container(
+      alignment: Alignment.centerRight,
+      child: FlatButton(
+        onPressed: () {
+        // TODO change password notification/reroute
+      },
+        padding: EdgeInsets.only(right: 0.0),
+        child: Text(
+          'Forgot Password?',
+          style: TextStyle(
+            color: AppColors.primary,
+            fontSize: 14.0,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildRememberMe() {
     return Container(
       child: Row(
@@ -163,7 +184,7 @@ class _LoginScreenState extends State<LogIn> {
         onPressed: () {
     if(_formKey.currentState.validate()) {
           _formKey.currentState.save();
-          //**AUTHORIZATION GOES HERE
+          // TODO account sign in authorization
           Navigator.pushReplacementNamed(context, "/map_explore");
           }
         },

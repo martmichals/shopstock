@@ -17,7 +17,7 @@ class _SignUpScreenState extends State<SignUp> {
   final TextEditingController _confirmPasswordControl = TextEditingController();
 
   //save values--set after button onPressed
-  String _nickName, _email, _password;
+  String _nickname, _email,_password;
 
   //default textField style
   //here as to not mess with theme.dart
@@ -25,7 +25,7 @@ class _SignUpScreenState extends State<SignUp> {
     color: AppColors.primary,
     fontSize: 16.0,
   );
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUp> {
           return null;
         },
         onSaved: (value) {
-          _nickName = value;
+          _nickname = value;
         },
       ),
     );
@@ -215,7 +215,7 @@ class _SignUpScreenState extends State<SignUp> {
           if(_formKey.currentState.validate()) {
             _formKey.currentState.save();
             //all fields have been preliminarily validated
-            //**ACCOUNT CREATION GOES HERE
+            // TODO Account creation
             Navigator.pushNamed(context, "/log_in");
           } else { //being auto validation
             setState(() {
