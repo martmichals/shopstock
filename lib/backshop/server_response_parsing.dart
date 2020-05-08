@@ -25,6 +25,11 @@ CategoryAssigner createAssigner(String itemsCategoriesJson) {
   return assigner;
 }
 
+// Method to parse the error message from a server response
+String parseError(String error){
+  return jsonDecode(error)['error'] as String;
+}
+
 // Method to parse the detailed return for a particular store
 Store parseStore(String storeJSON) {
   return null;

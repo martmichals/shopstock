@@ -55,7 +55,6 @@ Future<bool> getItemsCategories() async {
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
-    print(requestUrl);
 
     // Parse the response input stream
     var responseString = '';
@@ -70,7 +69,7 @@ Future<bool> getItemsCategories() async {
   } on SocketException {
     print('$TAG: No connection');
   } on Exception {
-    print('$TAG: App error in getAndSaveItems');
+    print('$TAG: App error in getItemsCatergories');
   }
   return false;
 }
@@ -116,15 +115,17 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
     String with an error message otherwise
  */
 Future<String> signUp(final nickname, final email, final password) async {
-  // Assembling the header
+  // Assembling the body
   final body = '{\"name\": \"$nickname\", \"email\": \"$email\", \"password\": '
       '\"$password\"}';
   final url = ShopstockUrl + 'create_account';
   Map<String, String> headers = {'Content-type': 'application/json'};
+  print(body);
 
   int statusCode;
+  http.Response response;
   try {
-    http.Response response = await http.post(url, headers: headers, body: body);
+    response = await http.post(url, headers: headers, body: body);
     statusCode = response.statusCode;
   } on SocketException {
     return 'Looks like you are not connected to the internet';
@@ -132,8 +133,13 @@ Future<String> signUp(final nickname, final email, final password) async {
     return 'Something went wrong while signing up';
   }
 
+  // Error message generation for the user
   if (statusCode != 200){
-    // TODO: Get detailed failure message
+    final parsedError = parseError(response.body);
+    if(parsedError != null){
+      return parsedError;
+    }
+    return 'Something went wrong in the account creation process, try once more';
   }
   return null;
 }
