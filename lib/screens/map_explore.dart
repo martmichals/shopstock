@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopstock/backshop/api_caller.dart';
@@ -10,6 +11,7 @@ import '../backshop/store.dart';
 GoogleMapController gMapController;
 
 class MapExplore extends StatefulWidget {
+  MapExplore({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _MapExploreState();
 }
@@ -24,7 +26,6 @@ class _MapExploreState extends State<MapExplore> {
       markerId: MarkerId(store.storeID.toString()),
       position: location,
       infoWindow: InfoWindow(title: store.storeName, onTap: () {
-
         // TODO : Delete the following test code
         Session.userReport = Report(store);
         print('Testing toJson Method');
@@ -66,6 +67,7 @@ class _MapExploreState extends State<MapExplore> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            buildUserDropdown(), // TODO move to right of search bar
             Padding(
               child: AppSearchBar(
                 onTextChange: (string) {},
@@ -83,4 +85,44 @@ class _MapExploreState extends State<MapExplore> {
       ),
     );
   }
+
+  var _userChoices = ["Logout", "Change Password", "cancel"];
+
+  Widget buildUserDropdown() {
+    return PopupMenuButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      color: AppColors.accentDark,
+      icon: Icon(
+        Icons.account_circle,
+        color: AppColors.accent,
+        size: 30.0,
+      ),
+      itemBuilder: (BuildContext context) {
+        return _userChoices.map((String choice) {
+          return PopupMenuItem<String>(
+            value: choice,
+            child: Text(
+              choice,
+              style: TextStyle(
+                color: AppColors.primary,
+              ),
+            ),
+          );
+        }).toList();
+      },
+      onSelected: _choiceAction,
+    );
+  }
+
+  void _choiceAction(String choice) {
+    if (choice == _userChoices[0]) {
+      // TODO logout functionality
+      Navigator.pushReplacementNamed(context, "/log_in");
+    } else if (choice == _userChoices[1]) {
+      // TODO change password functionality
+    }
+  }
+
 }

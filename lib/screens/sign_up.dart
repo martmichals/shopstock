@@ -17,7 +17,7 @@ class _SignUpScreenState extends State<SignUp> {
   final TextEditingController _confirmPasswordControl = TextEditingController();
 
   //save values--set after button onPressed
-  String _nickname, _email,_password;
+  String _nickname, _email, _password;
 
   //default textField style
   //here as to not mess with theme.dart
@@ -163,7 +163,7 @@ class _SignUpScreenState extends State<SignUp> {
           else if(!RegExp('(?=.*[0-9])').hasMatch(value))
             return "Password must contain a number";
           else if(!RegExp('(?=.*[!@#\$%^&*])').hasMatch(value))
-            return "Password must contain a special character (!@#\$%^&*)";
+            return "Password must contain a special character: !@#\$%^&*";
           else if(value.length < 8)
             return "Password must be at least 8 characters";
           return null;
