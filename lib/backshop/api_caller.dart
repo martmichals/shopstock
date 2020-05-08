@@ -106,8 +106,36 @@ Future<String> sendReport() async {
 Future<String> logIn(final email, final password, final stayLoggedIn) async {
   Session.isLongTermKey = stayLoggedIn;
 
-  // TODO: Launch log in request
+  // Assembling the body
+  final body = '{\"email\": \"$email\", \"password\": \"$password\", \"'
+      'stay_logged_in\": $stayLoggedIn}';
+  print(body);
+  final url = ShopstockUrl + 'login';
+  Map<String, String> headers = {'Content-type': 'application/json'};
 
+  int statusCode;
+  http.Response response;
+  try {
+    response = await http.post(url, headers: headers, body: body);
+    statusCode = response.statusCode;
+  } on SocketException {
+    return 'Looks like you are not connected to the internet';
+  } on Exception {
+    return 'Something went wrong while logging in';
+  }
+
+  if (statusCode != 200){
+    // Error message generation for the user
+    print(response.body);
+    final parsedError = parseError(response.body);
+    if(parsedError != null){
+      return parsedError;
+    }
+    return 'Something went wrong while logging in, please try once again';
+  }else{
+    // Fill the API key
+    print(response.body);
+  }
   return null;
 }
 
@@ -120,7 +148,6 @@ Future<String> signUp(final nickname, final email, final password) async {
       '\"$password\"}';
   final url = ShopstockUrl + 'create_account';
   Map<String, String> headers = {'Content-type': 'application/json'};
-  print(body);
 
   int statusCode;
   http.Response response;
