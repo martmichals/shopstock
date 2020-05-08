@@ -122,17 +122,17 @@ Future<String> signUp(final nickname, final email, final password) async {
   final url = ShopstockUrl + 'create_account';
   Map<String, String> headers = {'Content-type': 'application/json'};
 
-  int status_code;
+  int statusCode;
   try {
     http.Response response = await http.post(url, headers: headers, body: body);
-    status_code = response.statusCode;
+    statusCode = response.statusCode;
   } on SocketException {
     return 'Looks like you are not connected to the internet';
   } on Exception {
     return 'Something went wrong while signing up';
   }
 
-  if (status_code != 200){
+  if (statusCode != 200){
     // TODO: Get detailed failure message
   }
   return null;
