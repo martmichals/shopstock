@@ -29,6 +29,7 @@ class _LoginScreenState extends State<LogIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: backgroundDecoration(),
         height: double.infinity,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),

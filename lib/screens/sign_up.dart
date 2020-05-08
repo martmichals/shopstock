@@ -30,6 +30,7 @@ class _SignUpScreenState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: backgroundDecoration(),
         height: double.infinity,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
