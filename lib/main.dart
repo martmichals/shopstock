@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/api_caller.dart';
-import 'package:shopstock/backshop/local_data_handler.dart';
-import 'backshop/coordinate.dart';
 import 'backshop/map_handler.dart';
 import 'backshop/session_details.dart';
 import 'screens/screens.dart';
@@ -14,16 +12,10 @@ class App extends StatelessWidget  {
   @override
   Widget build(BuildContext context){
 
-    // Test code for async
-    final sw = Coordinate(41.889687, -87.630233);
-    final ne = Coordinate(42.893952, -87.625658);
-    getStoresInArea(sw, ne);
-
-    print('Creating a blank mapHandler static instance');
+    // Initialization of required app variables
     Session.mapHandler = MapHandler.blank();
+    getItemsCategories();
 
-    getAndSaveItems();
-    readItems();
     // End test code for async
 
     return MaterialApp(

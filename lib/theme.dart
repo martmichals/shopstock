@@ -40,6 +40,22 @@ final AppTheme = ThemeData(
   fontFamily: "sans-serif",
 );
 
+BoxDecoration backgroundDecoration() {
+  return BoxDecoration(
+    gradient: LinearGradient(
+        colors: [
+          Colors.black,
+          Colors.grey[900],
+          Colors.grey[850],
+          Colors.grey[800],
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        tileMode: TileMode.clamp
+    ),
+  );
+}
+
 class AppButton extends StatelessWidget {
   AppButton({
     @required this.onPressed,

@@ -1,4 +1,3 @@
-import 'package:shopstock/backshop/local_data_handler.dart';
 import 'package:shopstock/backshop/session_details.dart';
 
 /*  Methods in this file check the "health" of the app, giving information
@@ -12,21 +11,3 @@ bool checkEssentialsMap() => !(Session.shopstockAPIKey == null);
 bool checkEssentialsRecording() =>
     !(Session.assigner == null || Session.shopstockAPIKey == null);
 
-// Handling the API key on application startup
-Future<bool> setupKey() async {
-  if (Session.isLongTermKey) {
-    final isSavedKey = await initializeSessionKey();
-    if (!isSavedKey) {
-      // TODO: Pull the key from the server
-      return true;
-    }
-  }else{
-    // Just check for the key
-    if(Session.shopstockAPIKey != null) {
-      if (Session.shopstockAPIKey.length != 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-}
