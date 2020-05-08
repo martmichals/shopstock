@@ -186,12 +186,9 @@ class _LoginScreenState extends State<LogIn> {
         onPressed: () {
     if(_formKey.currentState.validate()) {
           _formKey.currentState.save();
-          // TODO interface with the loading screen
 
           // Launching of the login method
-          logIn(_email, _password, _rememberMe);
-
-          //Navigator.pushReplacementNamed(context, "/map_explore");
+          _loginPressed();
           }
         },
         padding: EdgeInsets.all(15.0),
@@ -242,5 +239,14 @@ class _LoginScreenState extends State<LogIn> {
     }else{
       throw 'Could not launch $url';
     }
+  }
+
+  _loginPressed() async {
+    // TODO : Add a loading screen into this method
+    final errorMessage = await logIn(_email, _password, _rememberMe);
+    if (errorMessage == null)
+      Navigator.pushReplacementNamed(context, "/map_explore");
+    else
+      print('Launching an alert with the message: $errorMessage');
   }
 }

@@ -213,13 +213,15 @@ class _SignUpScreenState extends State<SignUp> {
       child: RaisedButton(
         elevation: 5.0,
         //validation control
-        onPressed: () {
+        onPressed: () async{
           if(_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
             // TODO : Insert async method loading screen
             print('Launching sign up method');
-            signUp(_nickname, _email, _password);
+            print(await signUp(_nickname, _email, _password));
+
+
 
             Navigator.pushNamed(context, "/log_in");
           } else { //being auto validation

@@ -21,6 +21,7 @@ Future<bool> saveKey() async{
 }
 
 /*  Method to read from disk to initialize the API key
+    Checks with the server to see if the key is valid as well
     Returns true on success
  */
 Future<bool> initializeSessionKey() async{

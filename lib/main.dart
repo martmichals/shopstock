@@ -14,8 +14,6 @@ class App extends StatelessWidget  {
 
     // Initialization of required app variables
     Session.mapHandler = MapHandler.blank();
-    //getItemsCategories();
-
     // End test code for async
 
     return MaterialApp(
