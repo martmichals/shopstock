@@ -19,6 +19,7 @@ Future<List<Store>> getStoresInArea(
   final requestUrl = '${ShopstockUrl}get_stores_in_area?lat_1=${southWest.lat}'
       '&lat_2=${northEast.lat}&long_1=${southWest.long}'
       '&long_2=${northEast.long}';
+  print(requestUrl);
 
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
@@ -43,7 +44,6 @@ Future<List<Store>> getStoresInArea(
 // TODO : Make sure to call the full constructor
 // Method to get the items in a store
 Future<List<Item>> getItemsInStore(int storeID) {
-
   return null;
 }
 
@@ -55,6 +55,7 @@ Future<bool> getItemsCategories() async {
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
+    print(requestUrl);
 
     // Parse the response input stream
     var responseString = '';
@@ -77,18 +78,17 @@ Future<bool> getItemsCategories() async {
 /*  Method to send report, returns null on success
     String with an error message otherwise
  */
-Future<String> sendReport() async{
+Future<String> sendReport() async {
   final reportJson = Session.userReport.toJson();
-  if(reportJson == null)
-    return 'You did not fill the time field!';
+  if (reportJson == null) return 'You did not fill the time field!';
 
   final url = ShopstockUrl + 'send_report';
-  Map <String, String> headers = {'Content-type': 'application/json'};
+  Map<String, String> headers = {'Content-type': 'application/json'};
 
   int statusCode;
   try {
-    http.Response response = await http.post(
-        url, headers: headers, body: reportJson);
+    http.Response response =
+        await http.post(url, headers: headers, body: reportJson);
     statusCode = response.statusCode;
   } on SocketException {
     return 'Looks like you are not connected to the internet!';
@@ -96,8 +96,7 @@ Future<String> sendReport() async{
     return 'Something went wrong when sending the report';
   }
 
-  if(statusCode != 200)
-    return 'Something went wrong when sending the report';
+  if (statusCode != 200) return 'Something went wrong when sending the report';
 
   return null;
 }
@@ -108,8 +107,6 @@ Future<String> sendReport() async{
 Future<String> logIn(final email, final password, final stayLoggedIn) async {
   Session.isLongTermKey = stayLoggedIn;
 
-  // TODO: Local data checks
-
   // TODO: Launch log in request
 
   return null;
@@ -118,13 +115,25 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
 /*  Method to sign up, returns null if the sign up was a success
     String with an error message otherwise
  */
-Future<String> signUp(final firstName, final lastName, final email,
-    final password, final confirmPassword, final stayLoggedIn) async {
-  Session.isLongTermKey = stayLoggedIn;
+Future<String> signUp(final nickname, final email, final password) async {
+  // Assembling the header
+  final body = '{\"name\": \"$nickname\", \"email\": \"$email\", \"password\": '
+      '\"$password\"}';
+  final url = ShopstockUrl + 'create_account';
+  Map<String, String> headers = {'Content-type': 'application/json'};
 
-  // TODO: Local data checks
+  int status_code;
+  try {
+    http.Response response = await http.post(url, headers: headers, body: body);
+    status_code = response.statusCode;
+  } on SocketException {
+    return 'Looks like you are not connected to the internet';
+  } on Exception {
+    return 'Something went wrong while signing up';
+  }
 
-  // TODO: Launch log in request
-
+  if (status_code != 200){
+    // TODO: Get detailed failure message
+  }
   return null;
 }

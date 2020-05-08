@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-
 import 'package:shopstock/backshop/session_details.dart';
 
 // Filenames

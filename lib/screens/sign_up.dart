@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopstock/backshop/api_caller.dart';
 import '../theme.dart';
 
 class SignUp extends StatefulWidget {
@@ -214,8 +215,11 @@ class _SignUpScreenState extends State<SignUp> {
         onPressed: () {
           if(_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            //all fields have been preliminarily validated
-            // TODO Account creation
+
+            // TODO : Insert async method loading screen
+            print('Launching sign up method');
+            signUp(_nickname, _email, _password);
+
             Navigator.pushNamed(context, "/log_in");
           } else { //being auto validation
             setState(() {
