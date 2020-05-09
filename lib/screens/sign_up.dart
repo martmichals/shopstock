@@ -217,7 +217,6 @@ class _SignUpScreenState extends State<SignUp> {
           if(_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
-            // TODO : Insert async method loading screen
             print('Launching sign up method');
             var future = signUp(_nickname, _email, _password);
             future.then((data) {
@@ -291,5 +290,4 @@ class _SignUpScreenState extends State<SignUp> {
       ),
     );
   }
-
 }

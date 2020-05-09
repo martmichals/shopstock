@@ -198,7 +198,7 @@ class _ReportState extends State<Report> {
                 Center(
                     child: AppButton(
                       text: "Report",
-                      onPressed: () async{
+                      onPressed: () {
                         // Create the report
                         Session.userReport = backendReport.Report(store);
                         for (ItemReport itemReport in itemReportList.itemList) {
@@ -206,9 +206,27 @@ class _ReportState extends State<Report> {
                         }
                         Session.userReport.setTime(visitTime);
 
-                        // TODO : Launch the loading screen
                         print('Report screen return:');
-                        print(await sendReport());
+                        var future = sendReport();
+                        LoadingDialog(
+                            context: context,
+                            snapshot: future,
+                            onDone: (data) {
+                              if (data == null) {
+                                return Container();
+                              }
+                              else {
+                                return ErrorText(
+                                    text: data
+                                );
+                              }
+                            },
+                            onError: (error) {
+                              return ErrorText(
+                                  text: error.toString()
+                              );
+                            }
+                        );
 
                         Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
                       },
