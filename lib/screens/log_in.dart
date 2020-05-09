@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shopstock/backshop/api_caller.dart';
 import '../theme.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 const FONT_SIZE = 20.0;
 class LogIn extends StatefulWidget {
@@ -49,9 +52,13 @@ class _LoginScreenState extends State<LogIn> {
                 ),
               ),
               _buildTextFields(),
-              //SizedBox(height: 20.0),
-              _buildForgotPasswordButton(),
-              _buildRememberMe(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  _buildRememberMe(),
+                  _buildForgotPasswordButton(),
+                ],
+              ),
               _buildLogInButton(),
               _buildSignUpButton(),
             ],
@@ -132,15 +139,14 @@ class _LoginScreenState extends State<LogIn> {
     return Container(
       alignment: Alignment.centerRight,
       child: FlatButton(
-        onPressed: () {
-        // TODO change password notification/reroute
-      },
+        onPressed: _launchPasswordResetUrl,
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
           style: TextStyle(
             color: AppColors.primary,
             fontSize: 14.0,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),
@@ -185,8 +191,12 @@ class _LoginScreenState extends State<LogIn> {
         onPressed: () {
     if(_formKey.currentState.validate()) {
           _formKey.currentState.save();
-          // TODO account sign in authorization
-          Navigator.pushReplacementNamed(context, "/map_explore");
+          // TODO interface with the loading screen
+
+          // Launching of the login method
+          logIn(_email, _password, _rememberMe);
+
+          //Navigator.pushReplacementNamed(context, "/map_explore");
           }
         },
         padding: EdgeInsets.all(15.0),
@@ -230,6 +240,12 @@ class _LoginScreenState extends State<LogIn> {
     );
   }
 
-
-
+  _launchPasswordResetUrl() async{
+    const url = 'https://shopstock.live/reset_password/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    }else{
+      throw 'Could not launch $url';
+    }
+  }
 }
