@@ -7,6 +7,7 @@ import 'package:shopstock/backshop/report.dart';
 import 'package:shopstock/theme.dart';
 import 'package:shopstock/backshop/session_details.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:location/location.dart';
 import '../backshop/coordinate.dart';
 import '../backshop/store.dart';
 
@@ -35,28 +36,148 @@ class _MapExploreState extends State<MapExplore> {
     );
   }
 
+  Widget getLoading() {
+    return Expanded(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    GoogleMap gMap; // TODO: Add API-KEY on iOS
-    gMap = GoogleMap(
-      initialCameraPosition: CameraPosition(target: new LatLng(41.893514, -87.626310), zoom: 13.0), // TODO: Set Camera to User Location, otherwise, prompt to turn on location
-      onMapCreated: (controller) {
-        gMapController = controller;
-      },
-      onCameraIdle: () async {
-        final bounds = await gMapController.getVisibleRegion();
+    Location location = Location();
 
-        // Updating the stores on screen
-        final sw = Coordinate.fromLatLng(bounds.southwest);
-        final ne = Coordinate.fromLatLng(bounds.northeast);
-        final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
+    var gMap = StatefulBuilder(
+      builder: (context, setState) {
+        var permissionEnabled = location.hasPermission();
+        return FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data == PermissionStatus.granted) {
+                return StatefulBuilder(
+                  builder: (context, setState) {
+                    var serviceEnabled = location.serviceEnabled();
+                    return FutureBuilder(
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data) {
+                              var pos = location.getLocation().then((value) {
+                                if (value == null) {
+                                  throw("Error finding location");
+                                }
+                                else {
+                                  return LatLng(value.latitude, value.longitude);
+                                }
+                              });
+                              return FutureBuilder(
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Expanded(
+                                      child: Center(
+                                        child: Column(
+                                          children: <Widget>[
+                                            ErrorText(text: "Location Error!"),
+                                            AppButton(
+                                              text: "Reload",
+                                              onPressed: () {
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  else if (snapshot.hasData) {
+                                    return GoogleMap(
+                                      initialCameraPosition: CameraPosition(
+                                          target: snapshot.data, zoom: 12.0),
+                                      // TODO: Set Camera to User Location, otherwise, prompt to turn on location
+                                      onMapCreated: (controller) {
+                                        gMapController = controller;
+                                      },
+                                      onCameraIdle: () async {
+                                        final bounds = await gMapController.getVisibleRegion();
 
-        setState(() {
-          _markers = stores.map(_storeToMarker).toList();
-        });
+                                        // Updating the stores on screen
+                                        final sw = Coordinate.fromLatLng(bounds.southwest);
+                                        final ne = Coordinate.fromLatLng(bounds.northeast);
+                                        final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
+
+                                        setState(() {
+                                          _markers = stores.map(_storeToMarker).toList();
+                                        });
+                                      },
+                                      markers: _markers.toSet(),
+                                    );
+                                  }
+                                  return getLoading();
+                                },
+                                future: pos,
+                              );
+                            }
+                            else {
+                              return Expanded(
+                                child: Center(
+                                  child: Column(
+                                    children: <Widget>[
+                                      ErrorText(text: "Enable Location and Reload"),
+                                      AppButton(
+                                        text: "Enable Location",
+                                        onPressed: () {
+                                          location.requestService();
+                                        },
+                                      ),
+                                      AppButton(
+                                        text: "Reload",
+                                        onPressed: () {
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          }
+                          return Expanded(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                        future: serviceEnabled
+                    );
+                  },
+                );
+              }
+              else {
+                return Expanded(
+                  child: Center(
+                    child: Column(
+                      children: <Widget>[
+                        ErrorText(text: "Enable Location Permission in Settings and Reload"),
+                        AppButton(
+                          text: "Reload",
+                          onPressed: () {
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            }
+            return getLoading();
+          },
+          future: permissionEnabled,
+        );
       },
-      markers: _markers.toSet(),
     );
+
+    // TODO: Add API-KEY on iOS
 
     return Scaffold(
       body: SafeArea(
