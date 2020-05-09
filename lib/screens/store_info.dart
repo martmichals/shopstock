@@ -103,7 +103,7 @@ class _StoreInfoState extends State<StoreInfo> {
                     AppButton(
                       text: "Navigate",
                       onPressed: () {
-                        launch("geo:45.0,-90.0"); // Android only
+                        launch("geo:0,0?q=" + Uri.encodeComponent(store.storeAddress)); // Android only
                         // TODO : Launch Maps on iOS
                       },
                     ),

@@ -39,7 +39,7 @@ class _MapExploreState extends State<MapExplore> {
   Widget build(BuildContext context) {
     GoogleMap gMap; // TODO: Add API-KEY on iOS
     gMap = GoogleMap(
-      initialCameraPosition: CameraPosition(target: new LatLng(41.893514, -87.626310), zoom: 13.0),
+      initialCameraPosition: CameraPosition(target: new LatLng(41.893514, -87.626310), zoom: 13.0), // TODO: Set Camera to User Location, otherwise, prompt to turn on location
       onMapCreated: (controller) {
         gMapController = controller;
       },
