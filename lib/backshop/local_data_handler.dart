@@ -20,6 +20,21 @@ Future<bool> saveKey() async{
   }
 }
 
+/* Method to wipe the API key from the disk
+   Returns true on success
+ */
+Future<bool> wipeKey() async{
+  try{
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$KeyFilename');
+    await file.writeAsString('');
+    return true;
+  } on Exception {
+    print('Failed to wipe $KeyFilename');
+    return false;
+  }
+}
+
 /*  Method to read from disk to initialize the API key
     Checks with the server to see if the key is valid as well
     Returns true on success
@@ -43,6 +58,3 @@ Future<bool> initializeSessionKey() async{
     return false;
   }
 }
-
-
-

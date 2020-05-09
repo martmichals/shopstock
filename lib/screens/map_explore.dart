@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopstock/backshop/api_caller.dart';
+import 'package:shopstock/backshop/local_data_handler.dart';
 import 'package:shopstock/backshop/report.dart';
 import 'package:shopstock/theme.dart';
 import 'package:shopstock/backshop/session_details.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../backshop/coordinate.dart';
 import '../backshop/store.dart';
 
@@ -26,13 +28,8 @@ class _MapExploreState extends State<MapExplore> {
       markerId: MarkerId(store.storeID.toString()),
       position: location,
       infoWindow: InfoWindow(title: store.storeName, onTap: () {
-        // TODO : Delete the following test code
+        // Create user report with the selected store as the store of interest
         Session.userReport = Report(store);
-        print('Testing toJson Method');
-        sendReport();
-        // TODO : End here
-
-
         Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
       }),
     );
@@ -49,20 +46,10 @@ class _MapExploreState extends State<MapExplore> {
       onCameraIdle: () async {
         final bounds = await gMapController.getVisibleRegion();
 
+        // Updating the stores on screen
         final sw = Coordinate.fromLatLng(bounds.southwest);
         final ne = Coordinate.fromLatLng(bounds.northeast);
-
-        // print('Executing mapHandler.getStoresInScreen() method');
-        //final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
-        final stores = <Store> [
-          Store(
-            0,
-            "Name",
-            "Address ",
-            Coordinate(42, -88)
-          )
-        ];
-        // print(Session.mapHandler);
+        final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
 
         setState(() {
           _markers = stores.map(_storeToMarker).toList();
@@ -130,12 +117,23 @@ class _MapExploreState extends State<MapExplore> {
     );
   }
 
-  void _choiceAction(String choice) {
+  void _choiceAction(String choice) async{
     if (choice == _userChoices[0]) {
-      // TODO logout functionality
-      Navigator.pushReplacementNamed(context, "/log_in");
+      if(await wipeKey()) {
+        if (await logout()) {
+          Navigator.pushReplacementNamed(context, "/log_in");
+        }
+      }
+      return;
     } else if (choice == _userChoices[1]) {
-      // TODO change password functionality
+      // Launch the reset password url
+      const url = 'https://shopstock.live/reset_password/';
+      if (await canLaunch(url)) {
+        await launch(url);
+      }else{
+        print('Error opening the url');
+      }
+
     }
   }
 

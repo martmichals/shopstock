@@ -28,8 +28,11 @@ CategoryAssigner createAssigner(String itemsCategoriesJson) {
 // Method to parse the error message from a server response
 String parseError(String response) => jsonDecode(response)['error'] as String;
 
-// Method to parse the api key from a server response
+// Method to parse the API key from a server response
 String parseKey(String response) => jsonDecode(response)['key'] as String;
+
+// Method to get the server success attribute
+bool parseSuccessStatus(String response) => jsonDecode(response)['success'] as bool;
 
 // Method to parse the detailed return for a particular store
 Store parseStore(String storeJSON) {

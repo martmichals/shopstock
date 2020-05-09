@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/api_caller.dart';
+import 'package:shopstock/backshop/local_data_handler.dart';
 import '../theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,6 +28,17 @@ class _LoginScreenState extends State<LogIn> {
     color: AppColors.primary,
     fontSize: 16.0,
   );
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Cannot use async, since the method is overridden
+    initializeSessionKey().then((keyInitialized) {
+      if(keyInitialized)
+        Navigator.pushReplacementNamed(context, "/map_explore");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -267,16 +279,7 @@ class _LoginScreenState extends State<LogIn> {
     if (await canLaunch(url)) {
       await launch(url);
     }else{
-      throw 'Could not launch $url';
+      print('Error launching the password reset form');
     }
-  }
-
-  _loginPressed() async {
-    // TODO : Add a loading screen into this method
-    final errorMessage = await logIn(_email, _password, _rememberMe);
-    if (errorMessage == null)
-      Navigator.pushReplacementNamed(context, "/map_explore");
-    else
-      print('Launching an alert with the message: $errorMessage');
   }
 }

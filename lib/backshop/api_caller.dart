@@ -139,6 +139,9 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
     }
     return 'Something went wrong while logging in, please try once again';
   }else{
+     if(!parseSuccessStatus(response.body))
+       return parseError(response.body);
+
      Session.shopstockAPIKey = parseKey(response.body);
      if(Session.isLongTermKey){
        bool saveSuccess = await saveKey();
@@ -189,4 +192,26 @@ Future<String> signUp(final nickname, final email, final password) async {
     return 'Something went wrong in the account creation process, try once more';
   }
   return null;
+}
+
+
+// Method to logout on the server
+Future<bool> logout() async {
+  // Assembling the body
+  final body = '{\"key\": \"${Session.shopstockAPIKey}\"}';
+  final url = ShopstockUrl + 'logout';
+  Map<String, String> headers = {'Content-type': 'application/json'};
+
+  // Send the request, disregard server feedback
+  try {
+    http.Response response =  await http.post(url, headers: headers, body: body);
+    if(response.statusCode == 200)
+      if(parseSuccessStatus(response.body))
+        return true;
+    return false;
+  } on SocketException {
+    return false;
+  } on Exception {
+    return false;
+  }
 }
