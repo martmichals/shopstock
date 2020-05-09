@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/coordinate.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
@@ -21,11 +20,13 @@ Future<List<Store>> getStoresInArea(
   final requestUrl = '${ShopstockUrl}get_stores_in_area?lat_1=${southWest.lat}'
       '&lat_2=${northEast.lat}&long_1=${southWest.long}'
       '&long_2=${northEast.long}&key=${Session.shopstockAPIKey}';
-  print(requestUrl);
 
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
+
+    if(response.statusCode != 200)
+      print(response);
 
     // Parse the response input stream
     var responseString = '';
@@ -53,7 +54,7 @@ Future<List<Item>> getItemsInStore(int storeID) {
     Returns true if the pull and save were successful
  */
 Future<bool> getItemsCategories() async {
-  final requestUrl = '${ShopstockUrl}get_items';
+  final requestUrl = '${ShopstockUrl}get_items?key=${Session.shopstockAPIKey}';
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
@@ -111,7 +112,6 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
   // Assembling the body
   final body = '{\"email\": \"$email\", \"password\": \"$password\", \"'
       'stay_logged_in\": $stayLoggedIn}';
-  print(body);
   final url = ShopstockUrl + 'login';
   Map<String, String> headers = {'Content-type': 'application/json'};
 

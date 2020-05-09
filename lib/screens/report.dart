@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shopstock/backshop/api_caller.dart';
 import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/item_report_list.dart';
@@ -197,13 +198,18 @@ class _ReportState extends State<Report> {
                 Center(
                     child: AppButton(
                       text: "Report",
-                      onPressed: () {
+                      onPressed: () async{
                         // Create the report
                         Session.userReport = backendReport.Report(store);
                         for (ItemReport itemReport in itemReportList.itemList) {
                           Session.userReport.addNewLabel(itemReport.item, itemReport.status);
                         }
                         Session.userReport.setTime(visitTime);
+
+                        // TODO : Launch the loading screen
+                        print('Report screen return:');
+                        print(await sendReport());
+
                         Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
                       },
                     )

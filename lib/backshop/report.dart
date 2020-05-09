@@ -1,4 +1,5 @@
 import 'package:shopstock/backshop/item.dart';
+import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
 
 
@@ -50,11 +51,11 @@ class Report{
 
     int secondsSinceEpoch;
     if(_time != null)
-      secondsSinceEpoch = _time.millisecondsSinceEpoch / 1000 as int;
+      secondsSinceEpoch = (_time.millisecondsSinceEpoch / 1000).round();
     else
       return null;
 
-    str += '$secondsSinceEpoch}';
+    str += '$secondsSinceEpoch, \"key\": \"${Session.shopstockAPIKey}\"}';
     return str;
   }
 }
