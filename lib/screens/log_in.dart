@@ -52,9 +52,13 @@ class _LoginScreenState extends State<LogIn> {
                 ),
               ),
               _buildTextFields(),
-              //SizedBox(height: 20.0),
-              _buildForgotPasswordButton(),
-              _buildRememberMe(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  _buildRememberMe(),
+                  _buildForgotPasswordButton(),
+                ],
+              ),
               _buildLogInButton(),
               _buildSignUpButton(),
             ],
@@ -142,6 +146,7 @@ class _LoginScreenState extends State<LogIn> {
           style: TextStyle(
             color: AppColors.primary,
             fontSize: 14.0,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),
