@@ -72,7 +72,7 @@ class _MapExploreState extends State<MapExplore> {
                         onTextChange: (string) {}, // TODO: Add search bar functionality
                       ),
                     ),
-                    buildUserDropdown(),
+                    _buildUserDropdown(),
                   ],
                 ),
                 padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
@@ -95,33 +95,38 @@ class _MapExploreState extends State<MapExplore> {
 
   var _userChoices = ["Logout", "Change Password", "Cancel"];
 
-  Widget buildUserDropdown() {
-    return PopupMenuButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      color: AppColors.accentDark,
-      icon: Icon(
-        Icons.account_circle,
-        color: AppColors.accent,
-        size: 30.0,
-      ),
-      itemBuilder: (BuildContext context) {
-        return _userChoices.map((String choice) {
-          return PopupMenuItem<String>(
-            value: choice,
-            child: Text(
-              choice,
-              style: TextStyle(
-                color: AppColors.primary,
+  Widget _buildUserDropdown() {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.fromLTRB(0, 0, 12, 15),
+      child: PopupMenuButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: AppColors.accentDark,
+        icon: Icon(
+          Icons.account_circle,
+          color: AppColors.accent,
+          size: 55.0,
+        ),
+        itemBuilder: (BuildContext context) {
+          return _userChoices.map((String choice) {
+            return PopupMenuItem<String>(
+              value: choice,
+              child: Text(
+                choice,
+                style: TextStyle(
+                  color: AppColors.primary,
+                ),
               ),
-            ),
-          );
-        }).toList();
-      },
-      onSelected: _choiceAction,
+            );
+          }).toList();
+        },
+        onSelected: _choiceAction,
+      ),
     );
   }
+
 
   void _choiceAction(String choice) async{
     if (choice == _userChoices[0]) {
@@ -139,7 +144,6 @@ class _MapExploreState extends State<MapExplore> {
       }else{
         print('Error opening the url');
       }
-
     }
   }
 
