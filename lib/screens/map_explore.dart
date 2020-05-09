@@ -93,7 +93,6 @@ class _MapExploreState extends State<MapExplore> {
                                     return GoogleMap(
                                       initialCameraPosition: CameraPosition(
                                           target: snapshot.data, zoom: 12.0),
-                                      // TODO: Set Camera to User Location, otherwise, prompt to turn on location
                                       onMapCreated: (controller) {
                                         gMapController = controller;
                                       },
