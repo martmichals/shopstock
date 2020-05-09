@@ -21,6 +21,7 @@ Future<bool> saveKey() async{
 }
 
 /*  Method to read from disk to initialize the API key
+    Checks with the server to see if the key is valid as well
     Returns true on success
  */
 Future<bool> initializeSessionKey() async{
@@ -43,28 +44,5 @@ Future<bool> initializeSessionKey() async{
   }
 }
 
-/* Method to get the time since the key was saved
-   Returns the time in hours since the last operation performed on the file,
-   null otherwise
- */
-Future<int> getTimeSinceKeyUpdate() async{
-  final directory = await getApplicationDocumentsDirectory();
-  final file = File('${directory.path}/$KeyFilename');
-
-  try {
-    final lastModified = await file.lastModified();
-    final diff = lastModified.difference(DateTime.now());
-
-    if(diff != null)
-      return diff.inHours;
-    return null;
-  }on FileSystemException{
-    print('There was a file system exception when checking the key update time');
-    return null;
-  }on Exception{
-    print('There was an exception when checking key update time');
-    return null;
-  }
-}
 
 

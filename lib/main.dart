@@ -9,13 +9,10 @@ void main() => runApp(App());
 
 class App extends StatelessWidget  {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
 
     // Initialization of required app variables
     Session.mapHandler = MapHandler.blank();
-    //getItemsCategories();
-
-    // End test code for async
 
     return MaterialApp(
       title: Strings.title,

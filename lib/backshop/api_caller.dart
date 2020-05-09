@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:shopstock/backshop/coordinate.dart';
+import 'package:shopstock/backshop/local_data_handler.dart';
 import 'package:shopstock/backshop/server_response_parsing.dart';
 import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
@@ -18,12 +19,14 @@ Future<List<Store>> getStoresInArea(
     Coordinate southWest, Coordinate northEast) async {
   final requestUrl = '${ShopstockUrl}get_stores_in_area?lat_1=${southWest.lat}'
       '&lat_2=${northEast.lat}&long_1=${southWest.long}'
-      '&long_2=${northEast.long}';
-  print(requestUrl);
+      '&long_2=${northEast.long}&key=${Session.shopstockAPIKey}';
 
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
+
+    if(response.statusCode != 200)
+      print(response);
 
     // Parse the response input stream
     var responseString = '';
@@ -51,7 +54,7 @@ Future<List<Item>> getItemsInStore(int storeID) {
     Returns true if the pull and save were successful
  */
 Future<bool> getItemsCategories() async {
-  final requestUrl = '${ShopstockUrl}get_items';
+  final requestUrl = '${ShopstockUrl}get_items?key=${Session.shopstockAPIKey}';
   try {
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
@@ -109,7 +112,6 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
   // Assembling the body
   final body = '{\"email\": \"$email\", \"password\": \"$password\", \"'
       'stay_logged_in\": $stayLoggedIn}';
-  print(body);
   final url = ShopstockUrl + 'login';
   Map<String, String> headers = {'Content-type': 'application/json'};
 
@@ -126,17 +128,30 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
 
   if (statusCode != 200){
     // Error message generation for the user
-    print(response.body);
-    final parsedError = parseError(response.body);
+    String parsedError;
+    try {
+      parsedError = parseError(response.body);
+    }on FormatException{
+      return 'Something went wrong in creating your account, please try again';
+    }
     if(parsedError != null){
       return parsedError;
     }
     return 'Something went wrong while logging in, please try once again';
   }else{
-    // Fill the API key
-    print(response.body);
+     Session.shopstockAPIKey = parseKey(response.body);
+     if(Session.isLongTermKey){
+       bool saveSuccess = await saveKey();
+       if(saveSuccess){
+          return null;
+       }else{
+          print('API key did not save properly');
+          return 'Fatal error';
+       }
+     }else{
+       return null;
+     }
   }
-  return null;
 }
 
 /*  Method to sign up, returns null if the sign up was a success
@@ -162,7 +177,12 @@ Future<String> signUp(final nickname, final email, final password) async {
 
   // Error message generation for the user
   if (statusCode != 200){
-    final parsedError = parseError(response.body);
+    String parsedError;
+    try {
+      parsedError = parseError(response.body);
+    }on FormatException{
+      return 'Something went wrong in creating your account, please try again';
+    }
     if(parsedError != null){
       return parsedError;
     }
