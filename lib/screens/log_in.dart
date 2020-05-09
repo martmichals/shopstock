@@ -190,13 +190,35 @@ class _LoginScreenState extends State<LogIn> {
         elevation: 5.0,
         onPressed: () {
     if(_formKey.currentState.validate()) {
-          _formKey.currentState.save();
-          // TODO interface with the loading screen
+            _formKey.currentState.save();
 
-          // Launching of the login method
-          logIn(_email, _password, _rememberMe);
+            // Launching of the login method
+            var future = logIn(_email, _password, _rememberMe);
+            future.then((data) {
+              if (data == null) {
+                Navigator.pushReplacementNamed(context, "/map_explore");
+              }
+            });
 
-          //Navigator.pushReplacementNamed(context, "/map_explore");
+            LoadingDialog(
+                context: context,
+                snapshot: future,
+                onDone: (data) {
+                  if (data == null) {
+                    return Container();
+                  }
+                  else {
+                    return ErrorText(
+                        text: data
+                    );
+                  }
+                },
+                onError: (error) {
+                  return ErrorText(
+                      text: error.toString()
+                  );
+                }
+            );
           }
         },
         padding: EdgeInsets.all(15.0),

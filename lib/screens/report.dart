@@ -159,7 +159,7 @@ class _ReportState extends State<Report> {
                                           child: _buildSelList(search, setSubState),
                                         ),
                                       ],
-                                    ),
+                                  ),
                                   backgroundColor: Color.fromARGB(0, 0, 0, 0),
                                 );
                               },

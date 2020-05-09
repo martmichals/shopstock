@@ -53,7 +53,15 @@ class _MapExploreState extends State<MapExplore> {
         final ne = Coordinate.fromLatLng(bounds.northeast);
 
         // print('Executing mapHandler.getStoresInScreen() method');
-        final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
+        //final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
+        final stores = <Store> [
+          Store(
+            0,
+            "Name",
+            "Address ",
+            Coordinate(42, -88)
+          )
+        ];
         // print(Session.mapHandler);
 
         setState(() {
@@ -67,10 +75,16 @@ class _MapExploreState extends State<MapExplore> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            buildUserDropdown(), // TODO move to right of search bar
             Padding(
-              child: AppSearchBar(
-                onTextChange: (string) {},
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child:  AppSearchBar(
+                      onTextChange: (string) {},
+                    ),
+                  ),
+                  buildUserDropdown(),
+                ],
               ),
               padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
             ),
@@ -86,12 +100,12 @@ class _MapExploreState extends State<MapExplore> {
     );
   }
 
-  var _userChoices = ["Logout", "Change Password", "cancel"];
+  var _userChoices = ["Logout", "Change Password", "Cancel"];
 
   Widget buildUserDropdown() {
     return PopupMenuButton(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       color: AppColors.accentDark,
       icon: Icon(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopstock/backshop/api_caller.dart';
 import 'backshop/map_handler.dart';
 import 'backshop/session_details.dart';
 import 'screens/screens.dart';
@@ -25,7 +24,7 @@ class App extends StatelessWidget  {
       routes: {
         "/log_in": (context) => LogIn(),
         "/log_in/sign_up" : (context) => SignUp(),
-        "/log_in/sign_up/tutorial" : (context) => Tutorial(),
+        "/tutorial" : (context) => Tutorial(),
         "/map_explore": (context) => MapExplore(),
         "/map_explore/store_info" : (context) => StoreInfo(),
         "/map_explore/store_info/report" : (context) => Report(),

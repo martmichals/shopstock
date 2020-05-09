@@ -219,9 +219,32 @@ class _SignUpScreenState extends State<SignUp> {
 
             // TODO : Insert async method loading screen
             print('Launching sign up method');
-            signUp(_nickname, _email, _password);
+            var future = signUp(_nickname, _email, _password);
+            future.then((data) {
+              if (data == null) {
+                Navigator.pushReplacementNamed(context, "/tutorial");
+              }
+            });
 
-            Navigator.pushNamed(context, "/log_in");
+            LoadingDialog(
+                context: context,
+                snapshot: future,
+                onDone: (data) {
+                  if (data == null) {
+                    return Container();
+                  }
+                  else {
+                    return ErrorText(
+                        text: data
+                    );
+                  }
+                },
+                onError: (error) {
+                  return ErrorText(
+                      text: error.toString()
+                  );
+                }
+            );
           } else { //being auto validation
             setState(() {
               _autoValidate = true;

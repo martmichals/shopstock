@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
-import 'dart:io';
 
 class Tutorial extends StatefulWidget {
   @override
@@ -29,9 +28,11 @@ class _TutorialState extends State<Tutorial> {
                   if (index + 1 >= IMAGE_COUNT) {
                     Navigator.pushReplacementNamed(context, "/log_in");
                   }
-                  setState(() {
-                    index++;
-                  });
+                  else {
+                    setState(() {
+                      index++;
+                    });
+                  }
                 },
               )
           ),

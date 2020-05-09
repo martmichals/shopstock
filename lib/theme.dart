@@ -204,3 +204,45 @@ class AppItemTile extends StatelessWidget {
     );
   }
 }
+
+LoadingDialog({@required context, @required snapshot, @required onDone, @required onError}) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return onError(snapshot.error);
+            }
+            else if (snapshot.connectionState == ConnectionState.done) {
+              return onDone(snapshot.data);
+            }
+            else {
+              return Center(
+                  child: CircularProgressIndicator(),
+              );
+            }
+          },
+          future: snapshot,
+        );
+      }
+  );
+}
+
+class ErrorText extends StatelessWidget {
+  ErrorText({
+    @required this.text
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+    );
+  }
+}
