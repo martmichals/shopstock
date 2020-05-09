@@ -67,7 +67,7 @@ class _MapExploreState extends State<MapExplore> {
                 children: <Widget>[
                   Expanded(
                     child:  AppSearchBar(
-                      onTextChange: (string) {},
+                      onTextChange: (string) {}, // TODO: Add search bar functionality
                     ),
                   ),
                   buildUserDropdown(),
