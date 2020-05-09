@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -82,11 +83,8 @@ class _StoreInfoState extends State<StoreInfo> {
         child: Column(
           children: <Widget>[
             Padding(
-              child: Text(
-                store.storeAddress,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              padding: EdgeInsets.fromLTRB(0, PADDING, 0, 0),
+              child: _buildAddressOptions(store),
+              padding: EdgeInsets.fromLTRB(PADDING, PADDING, PADDING, 0),
             ),
             Padding(
               child: AppSearchBar(
@@ -122,4 +120,43 @@ class _StoreInfoState extends State<StoreInfo> {
       ),
     );
   }
+
+    Widget _buildAddressOptions(Store store) {
+      return PopupMenuButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Text(
+          store.storeAddress,
+          style: Theme.of(context).textTheme.bodyText1,
+          textAlign: TextAlign.center,
+        ),
+        color: AppColors.accentDark,
+        itemBuilder: (BuildContext context) {
+          return <PopupMenuEntry<int>>[
+            PopupMenuItem(
+              value: 0,
+              child: ListTile(
+                leading: Icon(
+                  Icons.content_copy,
+                  color: AppColors.primary,
+                ),
+                title: Text(
+                  "Copy Address",
+                  style: TextStyle(
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ),
+          ];
+        },
+        onSelected: (int choice) {
+          if(choice == 0) {
+            Clipboard.setData(ClipboardData(text: store.storeAddress));
+          }
+        },
+      );
+    }
+
 }
