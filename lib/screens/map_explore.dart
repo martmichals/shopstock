@@ -60,28 +60,31 @@ class _MapExploreState extends State<MapExplore> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child:  AppSearchBar(
-                      onTextChange: (string) {}, // TODO: Add search bar functionality
+        child: Container(
+          decoration: backgroundDecoration(),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child:  AppSearchBar(
+                        onTextChange: (string) {}, // TODO: Add search bar functionality
+                      ),
                     ),
-                  ),
-                  buildUserDropdown(),
-                ],
+                    buildUserDropdown(),
+                  ],
+                ),
+                padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
               ),
-              padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
-            ),
-            Expanded(
-              child: Padding(
-                child: gMap,
-                padding: EdgeInsets.all(PADDING),
+              Expanded(
+                child: Padding(
+                  child: gMap,
+                  padding: EdgeInsets.all(PADDING),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

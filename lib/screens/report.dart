@@ -131,109 +131,112 @@ class _ReportState extends State<Report> {
         title: Text("Report: " + store.storeName),
         backgroundColor: Theme.of(context).accentColor,
       ),
-      body: Column(
-              children: <Widget>[
-                Expanded(
-                  child: _buildReportList(),
-                ),
-                Center(
-                  child: AppButton(
-                    text: "Add Item Reports",
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            String search = "";
-                            return StatefulBuilder(
-                              builder: (context, setSubState) {
-                                return Dialog(
-                                  child: Column(
-                                      children: <Widget>[
-                                        AppSearchBar(
-                                          onTextChange: (string) {
-                                            setSubState(() {
-                                              search = string;
-                                            });
-                                          },
-                                        ),
-                                        Expanded(
-                                          child: _buildSelList(search, setSubState),
-                                        ),
-                                      ],
-                                  ),
-                                  backgroundColor: Color.fromARGB(0, 0, 0, 0),
-                                );
-                              },
-                            );
-                          });
-                    },
-                  ),
-                ),
-                Text(
-                  "Time of visit:",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                SizedBox(
-                  child: CupertinoTheme(
-                    child: CupertinoDatePicker(
-                      onDateTimeChanged: (dateTime) {
-                        setState(() {
-                          visitTime = dateTime;
-                        });
-                      },
-                      mode: CupertinoDatePickerMode.dateAndTime,
-                      minimumDate: DateTime.now().add(new Duration(days: -7)),
-                      initialDateTime: DateTime.now(),
-                      maximumDate: DateTime.now(),
-
-                    ),
-                    data: CupertinoThemeData(
-                        textTheme: CupertinoTextThemeData(
-                            primaryColor: AppColors.accent
-                        )
-                    ),
-                  ),
-                  height: 150,
-                ),
-                Center(
-                    child: AppButton(
-                      text: "Report",
-                      onPressed: () {
-                        // Create the report
-                        Session.userReport = backendReport.Report(store);
-                        for (ItemReport itemReport in itemReportList.itemList) {
-                          Session.userReport.addNewLabel(itemReport.item, itemReport.status);
-                        }
-                        Session.userReport.setTime(visitTime);
-
-                        print('Report screen return:');
-                        var future = sendReport();
-                        LoadingDialog(
-                            context: context,
-                            snapshot: future,
-                            onDone: (data) {
-                              if (data == null) {
-                                return Container();
-                              }
-                              else {
-                                return ErrorText(
-                                    text: data
-                                );
-                              }
-                            },
-                            onError: (error) {
-                              return ErrorText(
-                                  text: error.toString()
-                              );
-                            }
-                        );
-
-                        Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
-                      },
-                    )
-                )
-              ],
+      body: Container(
+        decoration: backgroundDecoration(),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: _buildReportList(),
             ),
+            Center(
+              child: AppButton(
+                text: "Add Item Reports",
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        String search = "";
+                        return StatefulBuilder(
+                          builder: (context, setSubState) {
+                            return Dialog(
+                              child: Column(
+                                children: <Widget>[
+                                  AppSearchBar(
+                                    onTextChange: (string) {
+                                      setSubState(() {
+                                        search = string;
+                                      });
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: _buildSelList(search, setSubState),
+                                  ),
+                                ],
+                              ),
+                              backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                            );
+                          },
+                        );
+                      });
+                },
+              ),
+            ),
+            Text(
+              "Time of visit:",
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(
+              child: CupertinoTheme(
+                child: CupertinoDatePicker(
+                  onDateTimeChanged: (dateTime) {
+                    setState(() {
+                      visitTime = dateTime;
+                    });
+                  },
+                  mode: CupertinoDatePickerMode.dateAndTime,
+                  minimumDate: DateTime.now().add(new Duration(days: -7)),
+                  initialDateTime: DateTime.now(),
+                  maximumDate: DateTime.now(),
+
+                ),
+                data: CupertinoThemeData(
+                    textTheme: CupertinoTextThemeData(
+                        primaryColor: AppColors.accent
+                    )
+                ),
+              ),
+              height: 150,
+            ),
+            Center(
+                child: AppButton(
+                  text: "Report",
+                  onPressed: () {
+                    // Create the report
+                    Session.userReport = backendReport.Report(store);
+                    for (ItemReport itemReport in itemReportList.itemList) {
+                      Session.userReport.addNewLabel(itemReport.item, itemReport.status);
+                    }
+                    Session.userReport.setTime(visitTime);
+
+                    print('Report screen return:');
+                    var future = sendReport();
+                    LoadingDialog(
+                        context: context,
+                        snapshot: future,
+                        onDone: (data) {
+                          if (data == null) {
+                            return Container();
+                          }
+                          else {
+                            return ErrorText(
+                                text: data
+                            );
+                          }
+                        },
+                        onError: (error) {
+                          return ErrorText(
+                              text: error.toString()
+                          );
+                        }
+                    );
+
+                    Navigator.pushNamedAndRemoveUntil(context, '/map_explore', (Route<dynamic> route) => false);
+                  },
+                )
+            )
+          ],
+        ),
+      ),
     );
   }
 }

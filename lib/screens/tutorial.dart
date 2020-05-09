@@ -13,30 +13,36 @@ class _TutorialState extends State<Tutorial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          Expanded(
-            child: FittedBox(
-              child:  Image.asset('lib/tutorial_images/image' + index.toString() + ".jpg"),
-              fit: BoxFit.fill,
+      body: Container(
+        decoration: backgroundDecoration(),
+        child:  ListView(
+          children: <Widget>[
+            Expanded(
+              child: FittedBox(
+                child: Padding(
+                  child: Image.asset('lib/tutorial_images/image' + index.toString() + ".jpg"),
+                  padding: EdgeInsets.fromLTRB(PADDING, PADDING, PADDING, 0),
+                ),
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          Center(
-              child: AppButton(
-                text: "Continue",
-                onPressed: () {
-                  if (index + 1 >= IMAGE_COUNT) {
-                    Navigator.pushReplacementNamed(context, "/log_in");
-                  }
-                  else {
-                    setState(() {
-                      index++;
-                    });
-                  }
-                },
-              )
-          ),
-        ],
+            Center(
+                child: AppButton(
+                  text: "Continue",
+                  onPressed: () {
+                    if (index + 1 >= IMAGE_COUNT) {
+                      Navigator.pushReplacementNamed(context, "/log_in");
+                    }
+                    else {
+                      setState(() {
+                        index++;
+                      });
+                    }
+                  },
+                )
+            ),
+          ],
+        ),
       ),
     );
   }

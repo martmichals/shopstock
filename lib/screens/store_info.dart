@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/theme.dart';
@@ -78,45 +77,48 @@ class _StoreInfoState extends State<StoreInfo> {
         title: Text(store.storeName),
         backgroundColor: Theme.of(context).accentColor,
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            child: Text(
-              store.storeAddress,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            padding: EdgeInsets.fromLTRB(0, PADDING, 0, 0),
-          ),
-          Padding(
-            child: AppSearchBar(
-              onTextChange: _onTextChange
-            ),
-            padding: EdgeInsets.all(PADDING),
-          ),
-          Expanded(
-            child: _buildList(store),
-          ),
-          Center(
-              child: Row(
-                children: <Widget>[
-                  AppButton(
-                    text: "Navigate",
-                    onPressed: () {
-                      launch("geo:45.0,-90.0"); // Android only
-                      // TODO : Launch Maps on iOS
-                    },
-                  ),
-                  AppButton(
-                    text: "Report",
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/map_explore/store_info/report", arguments: store);
-                    },
-                  ),
-                ],
-                mainAxisSize: MainAxisSize.min
+      body: Container(
+        decoration: backgroundDecoration(),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              child: Text(
+                store.storeAddress,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
-          ),
-        ],
+              padding: EdgeInsets.fromLTRB(0, PADDING, 0, 0),
+            ),
+            Padding(
+              child: AppSearchBar(
+                  onTextChange: _onTextChange
+              ),
+              padding: EdgeInsets.all(PADDING),
+            ),
+            Expanded(
+              child: _buildList(store),
+            ),
+            Center(
+              child: Row(
+                  children: <Widget>[
+                    AppButton(
+                      text: "Navigate",
+                      onPressed: () {
+                        launch("geo:45.0,-90.0"); // Android only
+                        // TODO : Launch Maps on iOS
+                      },
+                    ),
+                    AppButton(
+                      text: "Report",
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/map_explore/store_info/report", arguments: store);
+                      },
+                    ),
+                  ],
+                  mainAxisSize: MainAxisSize.min
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
