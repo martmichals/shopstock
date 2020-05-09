@@ -79,7 +79,10 @@ class _MapExploreState extends State<MapExplore> {
               ),
               Expanded(
                 child: Padding(
-                  child: gMap,
+                  child: ClipRRect(
+                    borderRadius:BorderRadius.all(Radius.circular(PADDING)),
+                    child: gMap,
+                  ),
                   padding: EdgeInsets.all(PADDING),
                 ),
               ),
