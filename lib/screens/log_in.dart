@@ -208,7 +208,11 @@ class _LoginScreenState extends State<LogIn> {
             var future = logIn(_email, _password, _rememberMe);
             future.then((data) {
               if (data == null) {
-                Navigator.pushReplacementNamed(context, "/map_explore");
+                var getItems = getItemsCategories();
+                getItems.then((isSuccess) {
+                  if(isSuccess)
+                    Navigator.pushReplacementNamed(context, "/map_explore");
+                });
               }
             });
 

@@ -49,6 +49,7 @@ Future<List<Item>> getItemsInStore(int storeID) async {
 
   // Simulate an asynchronous delay
   await new Future.delayed(const Duration(seconds : 2));
+
   List<Item> allItems = [];
   for(Item item in Session.allItems){
     final fullItem = Item.full(item.itemID, item.name, item.categoryID, 0.0);
