@@ -117,7 +117,7 @@ class _StoreInfoState extends State<StoreInfo> {
                     AppButton(
                       text: "Navigate",
                       onPressed: () {
-                        launch("geo:0,0?q=" + Uri.encodeComponent(store.storeAddress)); // Android only
+                        launch("geo:" + store.location.lat.toString() + "," + store.location.long.toString() + "?q=" + Uri.encodeComponent(store.storeName + " " + store.storeAddress)); // Android only
                         // TODO : Launch Maps on iOS
                       },
                     ),
