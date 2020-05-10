@@ -238,11 +238,15 @@ class ErrorText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyText1,
+    return Padding(
+      child: Center(
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
       ),
+      padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
     );
+
   }
 }
