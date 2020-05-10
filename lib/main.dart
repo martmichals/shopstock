@@ -15,9 +15,6 @@ class App extends StatelessWidget  {
     // Initialization of required app variables
     Session.mapHandler = MapHandler.blank();
 
-    // Test code
-    getItemsInStore(27099);
-
     return MaterialApp(
       title: Strings.title,
       initialRoute: "/log_in",
