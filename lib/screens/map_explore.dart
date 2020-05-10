@@ -20,8 +20,6 @@ class MapExplore extends StatefulWidget {
 }
 
 class _MapExploreState extends State<MapExplore> {
-  var _markers = <Marker>[];
-
   Marker _storeToMarker(Store store) {
     LatLng location = LatLng(store.location.lat, store.location.long);
 
@@ -58,7 +56,7 @@ class _MapExploreState extends State<MapExplore> {
   Widget build(BuildContext context) {
     Location location = Location();
 
-    var gMap = StatefulBuilder(
+    var gMapContainer = StatefulBuilder(
       builder: (context, setState) {
         var permissionEnabled = location.hasPermission();
         return FutureBuilder(
@@ -100,25 +98,33 @@ class _MapExploreState extends State<MapExplore> {
                                     );
                                   }
                                   else if (snapshot.hasData) {
-                                    return GoogleMap(
-                                      initialCameraPosition: CameraPosition(
-                                          target: snapshot.data, zoom: 12.0),
-                                      onMapCreated: (controller) {
-                                        gMapController = controller;
-                                      },
-                                      onCameraIdle: () async {
-                                        final bounds = await gMapController.getVisibleRegion();
+                                    var _markers = <Marker>[];
+                                    return StatefulBuilder(
+                                      builder: (context, setSubState) {
+                                        GoogleMap gMap;
+                                        gMap = GoogleMap(
+                                          initialCameraPosition: CameraPosition(
+                                              target: snapshot.data, zoom: 12.0),
+                                          onMapCreated: (controller) {
+                                              gMapController = controller;
+                                          },
+                                          onCameraIdle: () async {
+                                            final bounds = await gMapController.getVisibleRegion();
 
-                                        // Updating the stores on screen
-                                        final sw = Coordinate.fromLatLng(bounds.southwest);
-                                        final ne = Coordinate.fromLatLng(bounds.northeast);
-                                        final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
+                                            // Updating the stores on screen
+                                            final sw = Coordinate.fromLatLng(bounds.southwest);
+                                            final ne = Coordinate.fromLatLng(bounds.northeast);
+                                            final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
 
-                                        setState(() {
-                                          _markers = stores.map(_storeToMarker).toList();
-                                        });
+                                            setSubState(() {
+                                              _markers = stores.map(_storeToMarker).toList();
+                                              print("# of Stores: " + _markers.length.toString());
+                                            });
+                                          },
+                                          markers: _markers.toSet(),
+                                        );
+                                        return gMap;
                                       },
-                                      markers: _markers.toSet(),
                                     );
                                   }
                                   return getLoading();
@@ -211,7 +217,7 @@ class _MapExploreState extends State<MapExplore> {
                 child: Padding(
                   child: ClipRRect(
                     borderRadius:BorderRadius.all(Radius.circular(PADDING)),
-                    child: gMap,
+                    child: gMapContainer,
                   ),
                   padding: EdgeInsets.all(PADDING),
                 ),
