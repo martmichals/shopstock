@@ -45,6 +45,16 @@ class _MapExploreState extends State<MapExplore> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    var future = getItemsCategories();
+    future.then((success) {
+     if(!success)
+       Navigator.pushReplacementNamed(context, "/log_in");
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Location location = Location();
 
