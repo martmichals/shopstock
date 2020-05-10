@@ -17,7 +17,7 @@ class Item {
   // Getter methods
   int get itemID => _itemID;
   String get name => _name;
-  int get categoryName => _categoryID;
+  int get categoryID => _categoryID;
   double get labelling => _labelling;
 
   // Setter methods

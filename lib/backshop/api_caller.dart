@@ -25,8 +25,7 @@ Future<List<Store>> getStoresInArea(
     final request = await HttpClient().getUrl(Uri.parse(requestUrl));
     final response = await request.close();
 
-    if(response.statusCode != 200)
-      print(response);
+    if (response.statusCode != 200) print(response);
 
     // Parse the response input stream
     var responseString = '';
@@ -43,11 +42,38 @@ Future<List<Store>> getStoresInArea(
   }
 }
 
-// TODO : Implement the API call to get the items in the store
-// TODO : Make sure to call the full constructor
 // Method to get the items in a store
-Future<List<Item>> getItemsInStore(int storeID) {
-  return null;
+Future<List<Item>> getItemsInStore(int storeID) async {
+  final requestUrl =
+      'https://devel.shopstock.live:3002/api/get_item_labels?storeId=$storeID';
+
+  // Simulate an asynchronous delay
+  await new Future.delayed(const Duration(seconds : 2));
+  List<Item> allItems = [];
+  for(Item item in Session.allItems){
+    final fullItem = Item.full(item.itemID, item.name, item.categoryID, 0.0);
+    allItems.add(fullItem);
+  }
+  return allItems;
+
+  // TODO : Make this method actually work
+  /*
+  try {
+    final request = await HttpClient().getUrl(Uri.parse(requestUrl));
+    final response = await request.close();
+    print('Request w/o exceptions!');
+    print(response);
+
+    // TODO: Finish this method
+    return null;
+  } on SocketException {
+    print('Not connected to the internet in getItemsInStore');
+    return null;
+  } on Exception {
+    print('Fatal error in getItemsInStore');
+    return null;
+  }
+  */
 }
 
 /*  Method to get and save the list of all items
@@ -126,34 +152,33 @@ Future<String> logIn(final email, final password, final stayLoggedIn) async {
     return 'Something went wrong while logging in';
   }
 
-  if (statusCode != 200){
+  if (statusCode != 200) {
     // Error message generation for the user
     String parsedError;
     try {
       parsedError = parseError(response.body);
-    }on FormatException{
+    } on FormatException {
       return 'Something went wrong in creating your account, please try again';
     }
-    if(parsedError != null){
+    if (parsedError != null) {
       return parsedError;
     }
     return 'Something went wrong while logging in, please try once again';
-  }else{
-     if(!parseSuccessStatus(response.body))
-       return parseError(response.body);
+  } else {
+    if (!parseSuccessStatus(response.body)) return parseError(response.body);
 
-     Session.shopstockAPIKey = parseKey(response.body);
-     if(Session.isLongTermKey){
-       bool saveSuccess = await saveKey();
-       if(saveSuccess){
-          return null;
-       }else{
-          print('API key did not save properly');
-          return 'Fatal error';
-       }
-     }else{
-       return null;
-     }
+    Session.shopstockAPIKey = parseKey(response.body);
+    if (Session.isLongTermKey) {
+      bool saveSuccess = await saveKey();
+      if (saveSuccess) {
+        return null;
+      } else {
+        print('API key did not save properly');
+        return 'Fatal error';
+      }
+    } else {
+      return null;
+    }
   }
 }
 
@@ -179,21 +204,20 @@ Future<String> signUp(final nickname, final email, final password) async {
   }
 
   // Error message generation for the user
-  if (statusCode != 200){
+  if (statusCode != 200) {
     String parsedError;
     try {
       parsedError = parseError(response.body);
-    }on FormatException{
+    } on FormatException {
       return 'Something went wrong in creating your account, please try again';
     }
-    if(parsedError != null){
+    if (parsedError != null) {
       return parsedError;
     }
     return 'Something went wrong in the account creation process, try once more';
   }
   return null;
 }
-
 
 // Method to logout on the server
 Future<bool> logout() async {
@@ -204,10 +228,9 @@ Future<bool> logout() async {
 
   // Send the request, disregard server feedback
   try {
-    http.Response response =  await http.post(url, headers: headers, body: body);
-    if(response.statusCode == 200)
-      if(parseSuccessStatus(response.body))
-        return true;
+    http.Response response = await http.post(url, headers: headers, body: body);
+    if (response.statusCode == 200) if (parseSuccessStatus(response.body))
+      return true;
     return false;
   } on SocketException {
     return false;
