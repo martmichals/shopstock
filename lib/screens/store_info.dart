@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shopstock/backshop/api_caller.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,56 +14,71 @@ class StoreInfo extends StatefulWidget {
 class _StoreInfoState extends State<StoreInfo> {
     String search = "";
 
-  ListView _buildList(Store store) {
-    return ListView.builder(itemBuilder: (context, item) {
-      for(var item in store.items){
-        item.setLabelling(0.5);
-      }
+    FutureBuilder _buildList(Store store) {
+      var future = getItemsInStore(store.storeID);
 
-      if (item < store.items.length && store.items[item].name.toLowerCase().contains(search.toLowerCase())){
-        return ListTile(
-          title: Text(
-              store.items[item].name,
-              style: Theme.of(context).textTheme.bodyText1
-          ),
-          trailing: Container(
-            child: Padding(
-                child: Text(
-                        (confidence) {
-                      const outs = <String>[
-                        "Out of Stock",
-                        "Likely Out of Stock",
-                        "Unknown",
-                        "Likely In Stock",
-                        "In Stock"
-                      ];
-                      return outs[min((((confidence + 1) / 2) * outs.length).floor(), outs.length - 1)];
-                    }(store.items[item].labelling),
-                    style: TextStyle(
-                      color: AppColors.background,
-                    )
-                ),
-                padding: EdgeInsets.fromLTRB(8, 4, 8, 4)
-            ),
-            decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(1000),
-                ),
-                color: (confidence) {
-                  const double SAT = 0.6;
-                  double hue = ((confidence + 1) / 2);
-                  double red = sqrt(1 - (hue * SAT));
-                  double green = sqrt((1 - SAT) + hue * SAT);
-                  double blue = (1 - SAT);
-                  return Color.fromARGB(0xFF, (red * 0xff).round(), (green * 0xff).round(), (blue * 0xff).round());
-                } (store.items[item].labelling)
-            ),
-          ),
-        );
-      }
-      return null;
-    });
-  }
+      return FutureBuilder(
+          builder:(context, snapshot) {
+            if (snapshot.hasData) {
+              var items = snapshot.data;
+              return ListView.builder(itemBuilder: (context, item) {
+                for(var item in items){
+                  item.setLabelling(0.5);
+                }
+
+                if (item < items.length && items[item].name.toLowerCase().contains(search.toLowerCase())){
+                  return ListTile(
+                    title: Text(
+                        items[item].name,
+                        style: Theme.of(context).textTheme.bodyText1
+                    ),
+                    trailing: Container(
+                      child: Padding(
+                          child: Text(
+                                  (confidence) {
+                                const outs = <String>[
+                                  "Out of Stock",
+                                  "Likely Out of Stock",
+                                  "Unknown",
+                                  "Likely In Stock",
+                                  "In Stock"
+                                ];
+                                return outs[min((((confidence + 1) / 2) * outs.length).floor(), outs.length - 1)];
+                              }(items[item].labelling),
+                              style: TextStyle(
+                                color: AppColors.background,
+                              )
+                          ),
+                          padding: EdgeInsets.fromLTRB(8, 4, 8, 4)
+                      ),
+                      decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(1000),
+                          ),
+                          color: (confidence) {
+                            const double SAT = 0.6;
+                            double hue = ((confidence + 1) / 2);
+                            double red = sqrt(1 - (hue * SAT));
+                            double green = sqrt((1 - SAT) + hue * SAT);
+                            double blue = (1 - SAT);
+                            return Color.fromARGB(0xFF, (red * 0xff).round(), (green * 0xff).round(), (blue * 0xff).round());
+                          } (items[item].labelling)
+                      ),
+                    ),
+                  );
+                }
+                return null;
+              });
+            }
+            return Expanded(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
+        future: future,
+      );
+    }
 
   void _onTextChange(String str) {
     setState(() {
