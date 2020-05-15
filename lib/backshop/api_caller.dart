@@ -74,28 +74,6 @@ Future<List<Item>> getItemsInStore(int storeID) async {
     print('Fatal application error in getItemsInStore');
     return allItems;
   }
-
-
-  return allItems;
-
-  // TODO : Make this method actually work
-  /*
-  try {
-    final request = await HttpClient().getUrl(Uri.parse(requestUrl));
-    final response = await request.close();
-    print('Request w/o exceptions!');
-    print(response);
-
-    // TODO: Finish this method
-    return null;
-  } on SocketException {
-    print('Not connected to the internet in getItemsInStore');
-    return null;
-  } on Exception {
-    print('Fatal error in getItemsInStore');
-    return null;
-  }
-  */
 }
 
 /*  Method to get and save the list of all items
