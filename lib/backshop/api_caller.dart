@@ -45,16 +45,37 @@ Future<List<Store>> getStoresInArea(
 // Method to get the items in a store
 Future<List<Item>> getItemsInStore(int storeID) async {
   final requestUrl =
-      'https://devel.shopstock.live:3002/api/get_item_labels?storeId=$storeID';
-
-  // Simulate an asynchronous delay
-  await new Future.delayed(const Duration(seconds : 2));
+      'https://shopstock.live/api/get_item_labels?storeId=$storeID'
+      '&key=${Session.shopstockAPIKey}';
 
   List<Item> allItems = [];
   for(Item item in Session.allItems){
     final fullItem = Item.full(item.itemID, item.name, item.categoryID, 0.0);
     allItems.add(fullItem);
   }
+
+  try {
+   final request = await HttpClient().getUrl(Uri.parse(requestUrl));
+   final response = await request.close();
+
+   if(response.statusCode != 200) return allItems;
+
+   // Parse the response input stream
+   var responseString = '';
+   await for (var contents in response.transform(Utf8Decoder())) {
+     responseString += '$contents';
+   }
+   if(!parseSuccessStatus(responseString)) return allItems;
+   else return parseItemsWithLabels(responseString);
+  } on SocketException {
+    print('Application disconnected from the internet');
+    return allItems;
+  } on Exception {
+    print('Fatal application error in getItemsInStore');
+    return allItems;
+  }
+
+
   return allItems;
 
   // TODO : Make this method actually work
