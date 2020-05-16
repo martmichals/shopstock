@@ -43,7 +43,7 @@ class Report{
     }
     str += '], \"no_stock_items\": [';
     for(var i = 0; i < outOfStockIds.length; i++){
-      str += outOfStockIds[i] as String;
+      str += '${outOfStockIds[i]}';
       if(i != outOfStockIds.length - 1)
         str += ', ';
     }

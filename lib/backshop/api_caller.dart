@@ -47,6 +47,7 @@ Future<List<Item>> getItemsInStore(int storeID) async {
   final requestUrl =
       'https://shopstock.live/api/get_item_labels?storeId=$storeID'
       '&key=${Session.shopstockAPIKey}';
+  print(requestUrl);
 
   List<Item> allItems = [];
   for(Item item in Session.allItems){
@@ -108,6 +109,7 @@ Future<bool> getItemsCategories() async {
  */
 Future<String> sendReport() async {
   final reportJson = Session.userReport.toJson();
+  print(reportJson);
   if (reportJson == null) return 'You did not fill the time field!';
 
   final url = ShopstockUrl + 'send_report';

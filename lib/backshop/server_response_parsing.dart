@@ -39,6 +39,7 @@ bool parseSuccessStatus(String response) =>
 // Method to return a list of stores w/current confidence information
 List<Item> parseItemsWithLabels(String response) {
   var items = jsonDecode(response)['items'] as List;
+  print(response);
 
   Map<int, double> labels = Map();
   for (var item in items) {
