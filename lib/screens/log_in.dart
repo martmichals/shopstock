@@ -16,7 +16,7 @@ class _LoginScreenState extends State<LogIn> {
 
   bool _rememberMe = false; //state of remember me checkbox
   final _formKey = GlobalKey<FormState>(); //for validation/saving
-
+  bool _autoValidate = false;
   final TextEditingController _emailControl = TextEditingController();
   final TextEditingController _passwordControl = TextEditingController();
 
@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LogIn> {
   Widget _buildTextFields() {
     return Form(
         key: _formKey,
+        autovalidate: _autoValidate,
         child: Column(
           children: <Widget>[
             _buildEmail(),
@@ -206,7 +207,7 @@ class _LoginScreenState extends State<LogIn> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-    if(_formKey.currentState.validate()) {
+          if(_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
             // Launching of the login method
@@ -236,6 +237,10 @@ class _LoginScreenState extends State<LogIn> {
                   );
                 }
             );
+          } else { //being auto validation
+            setState(() {
+              _autoValidate = true;
+            });
           }
         },
         padding: EdgeInsets.all(15.0),

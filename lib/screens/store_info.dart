@@ -70,9 +70,12 @@ class _StoreInfoState extends State<StoreInfo> {
                 return null;
               });
             }
-            return Expanded(
-              child: Center(
-                child: CircularProgressIndicator(),
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
             );
           },
@@ -109,7 +112,7 @@ class _StoreInfoState extends State<StoreInfo> {
               padding: EdgeInsets.all(PADDING),
             ),
             Expanded(
-              child: _buildList(store),
+                child: _buildList(store),
             ),
             Center(
               child: Row(
