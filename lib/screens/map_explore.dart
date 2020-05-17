@@ -129,7 +129,6 @@ class _MapExploreState extends State<MapExplore> {
                                                                 }).toList();
                                                                 _markers = _shownStores.map(_storeToMarker).toList();
                                                               });
-                                                            }, // TODO: Add search bar functionality
                                                           ),
                                                         ),
                                                         _buildUserDropdown(),
