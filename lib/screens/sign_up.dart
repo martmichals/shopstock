@@ -56,7 +56,8 @@ class _SignUpScreenState extends State<SignUp> {
             ],
           )
         )
-      )
+      ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 

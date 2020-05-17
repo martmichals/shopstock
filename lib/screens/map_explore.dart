@@ -231,6 +231,7 @@ class _MapExploreState extends State<MapExplore> {
           ),
         ),
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 
