@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:shopstock/backshop/category_assigner.dart';
+import 'package:shopstock/backshop/session_details.dart';
 import 'package:shopstock/backshop/store.dart';
 import 'package:shopstock/backshop/item.dart';
 
@@ -32,9 +33,33 @@ String parseError(String response) => jsonDecode(response)['error'] as String;
 String parseKey(String response) => jsonDecode(response)['key'] as String;
 
 // Method to get the server success attribute
-bool parseSuccessStatus(String response) => jsonDecode(response)['success'] as bool;
+bool parseSuccessStatus(String response) =>
+    jsonDecode(response)['success'] as bool;
 
-// Method to parse the detailed return for a particular store
-Store parseStore(String storeJSON) {
-  return null;
+// Method to return a list of stores w/current confidence information
+List<Item> parseItemsWithLabels(String response) {
+  var items = jsonDecode(response)['items'] as List;
+
+  Map<int, double> labels = Map();
+  for (var item in items) {
+    // Type conversion
+    final id = int.parse(item['id']);
+    var label = item['label'];
+    if (label is int) {
+      label = label.toDouble();
+    }
+    // Assignment in the map
+    labels[id] = label;
+  }
+
+  List<Item> allItems = [];
+  for (Item item in Session.allItems) {
+    if (labels[item.itemID] != null) {
+      allItems.add(Item.full(item.itemID, item.name, item.categoryID, labels[item.itemID]));
+    } else {
+      allItems.add(Item.full(item.itemID, item.name, item.categoryID, 0.0));
+    }
+  }
+
+  return allItems;
 }

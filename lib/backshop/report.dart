@@ -37,7 +37,7 @@ class Report{
     // Iterate over the lists of item ids
     String str = '{\"in_stock_items\": [';
     for(var i = 0; i < inStockIds.length; i++){
-      str += inStockIds[i] as String;
+      str += '${inStockIds[i]}';
       if(i != inStockIds.length - 1)
        str += ', ';
     }
@@ -56,6 +56,7 @@ class Report{
       return null;
 
     str += '$secondsSinceEpoch, \"key\": \"${Session.shopstockAPIKey}\"}';
+    print(str);
     return str;
   }
 }
