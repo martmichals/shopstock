@@ -51,7 +51,7 @@ Future<List<Item>> getItemsInStore(int storeID) async {
 
   List<Item> allItems = [];
   for(Item item in Session.allItems){
-    final fullItem = Item.full(item.itemID, item.name, item.categoryID, 0.0);
+    final fullItem = Item.full(item.id, item.name, item.categoryID, 0.0);
     allItems.add(fullItem);
   }
 
@@ -99,7 +99,7 @@ Future<bool> getItemsCategories() async {
   } on SocketException {
     print('$TAG: No connection');
   } on Exception {
-    print('$TAG: App error in getItemsCatergories');
+    print('Fatal app error');
   }
   return false;
 }
@@ -240,3 +240,34 @@ Future<bool> logout() async {
     return false;
   }
 }
+
+// Method to get the expire time for an API key
+// IMPORTANT: Handles the case for which the server is down
+Future<DateTime> getExpireTime() async{
+  final requestUrl = '${ShopstockUrl}get_expire_time?key=${Session.shopstockAPIKey}';
+  try {
+    final request = await HttpClient().getUrl(Uri.parse(requestUrl));
+    final response = await request.close();
+
+    // Parse the response input stream
+    var responseString = '';
+    await for (var contents in response.transform(Utf8Decoder())) {
+      responseString += '$contents';
+    }
+    try {
+      if(parseSuccessStatus(responseString)) {
+        final unixTime = jsonDecode(responseString)['expires'] as int;
+        return DateTime.fromMillisecondsSinceEpoch(unixTime * 1000);
+      }
+    } on Exception {
+      print('There was an error parsing the server response for expire time');
+    }
+    return null;
+  } on SocketException {
+    print('$TAG: No connection');
+  } on Exception {
+    print('Fatal app error');
+  }
+  return null;
+}
+

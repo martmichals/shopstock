@@ -5,15 +5,15 @@ import 'api_caller.dart';
 
 // Class to represent a Store
 class Store{
-  final int _storeID;
-  final String _storeName;
-  final String _storeAddress;
+  final int _id;
+  final String _name;
+  final String _address;
   final Coordinate _location;
 
   List<Item> _items = <Item>[];
 
   // Constructor
-  Store(this._storeID, this._storeName, this._storeAddress, this._location);
+  Store(this._id, this._name, this._address, this._location);
 
   // Factory for JSON instantiation
   factory Store.fromJson(dynamic json){
@@ -24,16 +24,16 @@ class Store{
 
   // Async Getter Methods
   // TODO: Change this to simply fill _items
-  Future<List<Item>> fillItems() async => await getItemsInStore(_storeID);
+  Future<List<Item>> fillItems() async => await getItemsInStore(_id);
 
   // Getter Methods
-  int get storeID => _storeID;
-  String get storeName => _storeName;
-  String get storeAddress => _storeAddress;
+  int get id => _id;
+  String get name => _name;
+  String get address => _address;
   Coordinate get location => _location;
   List<Item> get items => _items;
 
   @override
-  String toString() => 'Store Name: $_storeName || Location:$_storeAddress || '
+  String toString() => 'Store Name: $_name || Location:$_address || '
       'Coordinates: $_location\n';
 }

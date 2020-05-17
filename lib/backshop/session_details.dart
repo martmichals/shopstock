@@ -20,7 +20,6 @@ class Session{
   static Report userReport;
 
   // TODO : Async method to check the health of the key
-  // TODO : Implement a method to wipe the key on app shutdown
 
   // Method to check the log in status of the user based on API key presence
   bool getLoginStatus(){

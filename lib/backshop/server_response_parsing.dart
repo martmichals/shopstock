@@ -55,10 +55,10 @@ List<Item> parseItemsWithLabels(String response) {
 
   List<Item> allItems = [];
   for (Item item in Session.allItems) {
-    if (labels[item.itemID] != null) {
-      allItems.add(Item.full(item.itemID, item.name, item.categoryID, labels[item.itemID]));
+    if (labels[item.id] != null) {
+      allItems.add(Item.full(item.id, item.name, item.categoryID, labels[item.id]));
     } else {
-      allItems.add(Item.full(item.itemID, item.name, item.categoryID, 0.0));
+      allItems.add(Item.full(item.id, item.name, item.categoryID, 0.0));
     }
   }
 

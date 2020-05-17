@@ -1,13 +1,13 @@
 // Class to represent an Item
 class Item {
-  final int _itemID;
+  final int _id;
   final String _name;
   final int _categoryID;
   double _labelling;
 
   // Constructors
-  Item(this._itemID, this._name, this._categoryID);
-  Item.full(this._itemID, this._name, this._categoryID, this._labelling);
+  Item(this._id, this._name, this._categoryID);
+  Item.full(this._id, this._name, this._categoryID, this._labelling);
 
   // Factory to create item from JSON
   factory Item.fromJson(dynamic json){
@@ -15,7 +15,7 @@ class Item {
   }
 
   // Getter methods
-  int get itemID => _itemID;
+  int get id => _id;
   String get name => _name;
   int get categoryID => _categoryID;
   double get labelling => _labelling;
@@ -24,5 +24,5 @@ class Item {
   void setLabelling(double labelling) => this._labelling = labelling;
 
   @override
-  String toString() => 'Item $_itemID\nName:$_name';
+  String toString() => 'Item $_id\nName:$_name';
 }

@@ -128,7 +128,7 @@ class _ReportState extends State<Report> {
     final Store store = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Report: " + store.storeName),
+        title: Text("Report: " + store.name),
         backgroundColor: Theme.of(context).accentColor,
       ),
       body: Container(

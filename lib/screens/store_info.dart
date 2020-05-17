@@ -15,7 +15,7 @@ class _StoreInfoState extends State<StoreInfo> {
     String search = "";
 
     FutureBuilder _buildList(Store store) {
-      var future = getItemsInStore(store.storeID);
+      var future = getItemsInStore(store.id);
 
       return FutureBuilder(
           builder:(context, snapshot) {
@@ -91,7 +91,7 @@ class _StoreInfoState extends State<StoreInfo> {
     final Store store = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text(store.storeName),
+        title: Text(store.name),
         backgroundColor: Theme.of(context).accentColor,
       ),
       body: Container(
@@ -117,7 +117,7 @@ class _StoreInfoState extends State<StoreInfo> {
                     AppButton(
                       text: "Navigate",
                       onPressed: () {
-                        launch("geo:" + store.location.lat.toString() + "," + store.location.long.toString() + "?q=" + Uri.encodeComponent(store.storeName + " " + store.storeAddress)); // Android only
+                        launch("geo:" + store.location.lat.toString() + "," + store.location.long.toString() + "?q=" + Uri.encodeComponent(store.name + " " + store.address)); // Android only
                         // TODO : Launch Maps on iOS
                       },
                     ),
@@ -143,7 +143,7 @@ class _StoreInfoState extends State<StoreInfo> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Text(
-          store.storeAddress,
+          store.address,
           style: Theme.of(context).textTheme.bodyText1,
           textAlign: TextAlign.center,
         ),
@@ -169,7 +169,7 @@ class _StoreInfoState extends State<StoreInfo> {
         },
         onSelected: (int choice) {
           if(choice == 0) {
-            Clipboard.setData(ClipboardData(text: store.storeAddress));
+            Clipboard.setData(ClipboardData(text: store.address));
           }
         },
       );

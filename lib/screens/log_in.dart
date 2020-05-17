@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopstock/backshop/api_caller.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
+import 'package:shopstock/backshop/session_details.dart';
 import '../theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -33,10 +34,13 @@ class _LoginScreenState extends State<LogIn> {
   void initState() {
     super.initState();
 
-    // Cannot use async, since the method is overridden
+    // Cannot use async keyword, since the method is overridden
     initializeSessionKey().then((keyInitialized) {
-      if(keyInitialized)
-        Navigator.pushReplacementNamed(context, "/map_explore");
+      if(keyInitialized) {
+        getExpireTime().then((expireTime) {
+          Navigator.pushReplacementNamed(context, "/map_explore");
+        });
+      }
     });
   }
 

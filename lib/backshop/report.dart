@@ -15,8 +15,8 @@ class Report{
   }
 
   // Manipulating the labels
-  void addNewLabel(Item item, int label) => _labellings.putIfAbsent(item.itemID, () => label);
-  void removeLabel(Item item) => _labellings.remove(item.itemID);
+  void addNewLabel(Item item, int label) => _labellings.putIfAbsent(item.id, () => label);
+  void removeLabel(Item item) => _labellings.remove(item.id);
 
   // Setter methods
   void setTime(DateTime time) => _time = time;
@@ -47,7 +47,7 @@ class Report{
       if(i != outOfStockIds.length - 1)
         str += ', ';
     }
-    str += '], \"store_id\": ${store.storeID}, \"timestamp\": ';
+    str += '], \"store_id\": ${store.id}, \"timestamp\": ';
 
     int secondsSinceEpoch;
     if(_time != null)

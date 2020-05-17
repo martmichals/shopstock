@@ -24,9 +24,9 @@ class _MapExploreState extends State<MapExplore> {
     LatLng location = LatLng(store.location.lat, store.location.long);
 
     return Marker(
-      markerId: MarkerId(store.storeID.toString()),
+      markerId: MarkerId(store.id.toString()),
       position: location,
-      infoWindow: InfoWindow(title: store.storeName, onTap: () {
+      infoWindow: InfoWindow(title: store.name, onTap: () {
         // Create user report with the selected store as the store of interest
         Session.userReport = Report(store);
         Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
