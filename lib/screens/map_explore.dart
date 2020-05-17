@@ -129,6 +129,7 @@ class _MapExploreState extends State<MapExplore> {
                                                                 }).toList();
                                                                 _markers = _shownStores.map(_storeToMarker).toList();
                                                               });
+                                                            },
                                                           ),
                                                         ),
                                                         _buildUserDropdown(),
