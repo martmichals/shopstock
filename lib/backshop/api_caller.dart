@@ -47,7 +47,6 @@ Future<List<Item>> getItemsInStore(int storeID) async {
   final requestUrl =
       'https://shopstock.live/api/get_item_labels?storeId=$storeID'
       '&key=${Session.shopstockAPIKey}';
-  print(requestUrl);
 
   List<Item> allItems = [];
   for(Item item in Session.allItems){
