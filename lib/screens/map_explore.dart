@@ -26,11 +26,15 @@ class _MapExploreState extends State<MapExplore> {
     return Marker(
       markerId: MarkerId(store.storeID.toString()),
       position: location,
-      infoWindow: InfoWindow(title: store.storeName, onTap: () {
-        // Create user report with the selected store as the store of interest
-        Session.userReport = Report(store);
-        Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
-      }),
+      infoWindow: InfoWindow(
+          title: store.storeName,
+          snippet: "Tap to view info",
+          onTap: () {
+            // Create user report with the selected store as the store of interest
+            Session.userReport = Report(store);
+            Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
+          }
+      ),
     );
   }
 
@@ -52,6 +56,7 @@ class _MapExploreState extends State<MapExplore> {
     });
   }
 
+  // TODO: Add API-KEY on iOS
   @override
   Widget build(BuildContext context) {
     Location location = Location();
