@@ -26,11 +26,15 @@ class _MapExploreState extends State<MapExplore> {
     return Marker(
       markerId: MarkerId(store.id.toString()),
       position: location,
-      infoWindow: InfoWindow(title: store.name, onTap: () {
-        // Create user report with the selected store as the store of interest
-        Session.userReport = Report(store);
-        Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
-      }),
+      infoWindow: InfoWindow(
+          title: store.name,
+          snippet: "Tap to view info",
+          onTap: () {
+            // Create user report with the selected store as the store of interest
+            Session.userReport = Report(store);
+            Navigator.pushNamed(context, "/map_explore/store_info", arguments: store);
+          }
+      ),
     );
   }
 
@@ -52,180 +56,194 @@ class _MapExploreState extends State<MapExplore> {
     });
   }
 
+  // TODO: Add API-KEY on iOS
   @override
   Widget build(BuildContext context) {
     Location location = Location();
 
-    var gMapContainer = StatefulBuilder(
-      builder: (context, setState) {
-        var permissionEnabled = location.hasPermission();
-        return FutureBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data == PermissionStatus.granted) {
-                return StatefulBuilder(
-                  builder: (context, setState) {
-                    var serviceEnabled = location.serviceEnabled();
-                    return FutureBuilder(
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.data) {
-                              var pos = location.getLocation().then((value) {
-                                if (value == null) {
-                                  throw("Error finding location");
-                                }
-                                else {
-                                  return LatLng(value.latitude, value.longitude);
-                                }
-                              });
-                              return FutureBuilder(
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Expanded(
-                                      child: Center(
-                                        child: Column(
-                                          children: <Widget>[
-                                            ErrorText(text: "Location Error!"),
-                                            AppButton(
-                                              text: "Reload",
-                                              onPressed: () {
-                                                setState(() {});
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  else if (snapshot.hasData) {
-                                    var _markers = <Marker>[];
-                                    return StatefulBuilder(
-                                      builder: (context, setSubState) {
-                                        GoogleMap gMap;
-                                        gMap = GoogleMap(
-                                          initialCameraPosition: CameraPosition(
-                                              target: snapshot.data, zoom: 12.0),
-                                          onMapCreated: (controller) {
-                                              gMapController = controller;
-                                          },
-                                          onCameraIdle: () async {
-                                            final bounds = await gMapController.getVisibleRegion();
-
-                                            // Updating the stores on screen
-                                            final sw = Coordinate.fromLatLng(bounds.southwest);
-                                            final ne = Coordinate.fromLatLng(bounds.northeast);
-                                            final stores = await Session.mapHandler.getStoresInScreen(sw, ne);
-
-                                            setSubState(() {
-                                              _markers = stores.map(_storeToMarker).toList();
-                                              print("# of Stores: " + _markers.length.toString());
-                                            });
-                                          },
-                                          markers: _markers.toSet(),
-                                        );
-                                        return gMap;
-                                      },
-                                    );
-                                  }
-                                  return getLoading();
-                                },
-                                future: pos,
-                              );
-                            }
-                            else {
-                              return Expanded(
-                                child: Center(
-                                  child: Column(
-                                    children: <Widget>[
-                                      ErrorText(text: "Enable Location and Reload"),
-                                      AppButton(
-                                        text: "Enable Location",
-                                        onPressed: () {
-                                          location.requestService();
-                                        },
-                                      ),
-                                      AppButton(
-                                        text: "Reload",
-                                        onPressed: () {
-                                          setState(() {});
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
-                          }
-                          return Expanded(
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        },
-                        future: serviceEnabled
-                    );
-                  },
-                );
-              }
-              else {
-                return Expanded(
-                  child: Center(
-                    child: Column(
-                      children: <Widget>[
-                        ErrorText(text: "Enable Location Permission in Settings and Reload"),
-                        AppButton(
-                          text: "Reload",
-                          onPressed: () {
-                            setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-            }
-            return getLoading();
-          },
-          future: permissionEnabled,
-        );
-      },
-    );
-
-    // TODO: Add API-KEY on iOS
-
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          decoration: backgroundDecoration(),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child:  AppSearchBar(
-                        onTextChange: (string) {}, // TODO: Add search bar functionality
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            var permissionEnabled = location.hasPermission();
+            return FutureBuilder(
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data == PermissionStatus.granted) {
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        var serviceEnabled = location.serviceEnabled();
+                        return FutureBuilder(
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data) {
+                                  var pos = location.getLocation().then((value) {
+                                    if (value == null) {
+                                      throw("Error finding location");
+                                    }
+                                    else {
+                                      return LatLng(value.latitude, value.longitude);
+                                    }
+                                  });
+                                  return FutureBuilder(
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Expanded(
+                                          child: Center(
+                                            child: Column(
+                                              children: <Widget>[
+                                                ErrorText(text: "Location Error!"),
+                                                AppButton(
+                                                  text: "Reload",
+                                                  onPressed: () {
+                                                    setState(() {});
+                                                  },
+                                                ),
+                                              ],
+                                              mainAxisSize: MainAxisSize.min,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      else if (snapshot.hasData) {
+                                        String search = "";
+                                        var _markers = <Marker>[];
+                                        var _stores = <Store>[];
+                                        var _shownStores = <Store>[];
+                                        return StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Container(
+                                              decoration: backgroundDecoration(),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Padding(
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child:  AppSearchBar(
+                                                            onTextChange: (string) {
+                                                              setState(() {
+                                                                search = string;
+                                                                _shownStores = _stores.where((x) {
+                                                                  return x.name.toLowerCase().contains(search.toLowerCase());
+                                                                }).toList();
+                                                                _markers = _shownStores.map(_storeToMarker).toList();
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                        _buildUserDropdown(),
+                                                      ],
+                                                    ),
+                                                    padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
+                                                  ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      child: ClipRRect(
+                                                        borderRadius:BorderRadius.all(Radius.circular(PADDING)),
+                                                        child: GoogleMap(
+                                                          initialCameraPosition: CameraPosition(
+                                                              target: snapshot.data, zoom: 12.0),
+                                                          onMapCreated: (controller) {
+                                                            gMapController = controller;
+                                                          },
+                                                          onCameraIdle: () async {
+                                                            final bounds = await gMapController.getVisibleRegion();
+
+                                                            // Updating the stores on screen
+                                                            final sw = Coordinate.fromLatLng(bounds.southwest);
+                                                            final ne = Coordinate.fromLatLng(bounds.northeast);
+                                                            var response = await Session.mapHandler.getStoresInScreen(sw, ne);
+
+                                                            setState(() {
+                                                              _stores = response;
+                                                              _shownStores = _stores.where((x) {
+                                                                return x.name.toLowerCase().contains(search.toLowerCase());
+                                                              }).toList();
+                                                              _markers = _shownStores.map(_storeToMarker).toList();
+                                                              print("# of Stores: " + _markers.length.toString());
+                                                            });
+                                                          },
+                                                          markers: _markers.toSet(),
+                                                        ),
+                                                      ),
+                                                      padding: EdgeInsets.all(PADDING),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+                                      return getLoading();
+                                    },
+                                    future: pos,
+                                  );
+                                }
+                                else {
+                                  return Expanded(
+                                    child: Center(
+                                      child: Column(
+                                        children: <Widget>[
+                                          ErrorText(text: "Enable Location and Reload"),
+                                          AppButton(
+                                            text: "Enable Location",
+                                            onPressed: () {
+                                              location.requestService();
+                                            },
+                                          ),
+                                          AppButton(
+                                            text: "Reload",
+                                            onPressed: () {
+                                              setState(() {});
+                                            },
+                                          ),
+                                        ],
+                                        mainAxisSize: MainAxisSize.min,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
+                              return Expanded(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                            future: serviceEnabled
+                        );
+                      },
+                    );
+                  }
+                  else {
+                    return Expanded(
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[
+                            ErrorText(text: "Enable Location Permission in Settings and Reload"),
+                            AppButton(
+                              text: "Reload",
+                              onPressed: () {
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                          mainAxisSize: MainAxisSize.min,
+                        ),
                       ),
-                    ),
-                    _buildUserDropdown(),
-                  ],
-                ),
-                padding: EdgeInsets.fromLTRB(PADDING, 0, PADDING, 0),
-              ),
-              Expanded(
-                child: Padding(
-                  child: ClipRRect(
-                    borderRadius:BorderRadius.all(Radius.circular(PADDING)),
-                    child: gMapContainer,
-                  ),
-                  padding: EdgeInsets.all(PADDING),
-                ),
-              ),
-            ],
-          ),
+                    );
+                  }
+                }
+                return getLoading();
+              },
+              future: permissionEnabled,
+            );
+          },
         ),
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 

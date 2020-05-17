@@ -81,6 +81,7 @@ class _LoginScreenState extends State<LogIn> {
           ),
         ),
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 

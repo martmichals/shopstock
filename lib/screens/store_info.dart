@@ -134,6 +134,7 @@ class _StoreInfoState extends State<StoreInfo> {
           ],
         ),
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 

@@ -44,6 +44,7 @@ class _TutorialState extends State<Tutorial> {
           ],
         ),
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 }

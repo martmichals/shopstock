@@ -237,6 +237,7 @@ class _ReportState extends State<Report> {
           ],
         ),
       ),
+      resizeToAvoidBottomPadding: false,
     );
   }
 }
