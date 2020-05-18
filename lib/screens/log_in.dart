@@ -38,7 +38,13 @@ class _LoginScreenState extends State<LogIn> {
     initializeSessionKey().then((keyInitialized) {
       if(keyInitialized) {
         getExpireTime().then((expireTime) {
-          Navigator.pushReplacementNamed(context, "/map_explore");
+          if (expireTime != null)
+            Navigator.pushReplacementNamed(context, "/map_explore");
+          else
+            wipeKey().then((success) {
+              if(!success)
+                print('Could not wipe the key from disk - fatal error');
+            });
         });
       }
     });

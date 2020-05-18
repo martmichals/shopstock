@@ -18,8 +18,6 @@ class CategoryAssigner{
   List<String> getCategoryNames() => _categories.values;
   String getCategoryByID(int id) => _categories[id];
 
-  // TODO : Implement a method that returns and item dictionary for the UI
-
   @override
   String toString() {
     var str = 'CATEGORY ASSIGNER: ';

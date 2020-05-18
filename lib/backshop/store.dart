@@ -22,10 +22,6 @@ class Store{
                  Coordinate(json['lat'] as double, json['long'] as double));
   }
 
-  // Async Getter Methods
-  // TODO: Change this to simply fill _items
-  Future<List<Item>> fillItems() async => await getItemsInStore(_id);
-
   // Getter Methods
   int get id => _id;
   String get name => _name;

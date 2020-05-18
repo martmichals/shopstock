@@ -31,7 +31,6 @@ class Report{
     List<int> inStockIds = [];
     List<int> outOfStockIds = [];
 
-    // TODO: Make sure that the proper items are being labelled
     _labellings.forEach((key, value) => value == 1 ? inStockIds.add(key) : outOfStockIds.add(key));
 
     // Iterate over the lists of item ids
