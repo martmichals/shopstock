@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopstock/backshop/api_caller.dart';
 import 'package:shopstock/backshop/local_data_handler.dart';
@@ -61,7 +62,9 @@ class _MapExploreState extends State<MapExplore> {
   Widget build(BuildContext context) {
     Location location = Location();
 
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+        child: Scaffold(
       body: SafeArea(
         child: StatefulBuilder(
           builder: (context, setState) {
@@ -244,6 +247,7 @@ class _MapExploreState extends State<MapExplore> {
         ),
       ),
       resizeToAvoidBottomPadding: false,
+        ),
     );
   }
 
@@ -299,6 +303,27 @@ class _MapExploreState extends State<MapExplore> {
         print('Error opening the url');
       }
     }
+  }
+
+  Future<bool> _onBackPressed() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Are you sure you want to exit the app?",
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("No"),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          FlatButton(
+            child: Text("Yes"),
+            onPressed: () => SystemNavigator.pop(),
+          ),
+        ]
+      ),
+    );
   }
 
 }
