@@ -2,7 +2,7 @@
 
 An app developed in the midst of the COVID-19 pandemic. Uses user-reported data in order to provide out-of-stock data on stores in the United States. Meant to limit unnecessary exposure to others in supermarkets by enabling users to ensure the product they are looking for is in stock. <br>
 
--- Application Under Active Development --
+-- Application Development Halted --
 
 ## App Setup
 Android Studio:
