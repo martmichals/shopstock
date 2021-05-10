@@ -1,4 +1,9 @@
-# Shopstock
+<h1 align ="center">Shopstock</h1>
+<p align = "center"><a href="https://github.com/martmichals/shopstock/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/martmichals/shopstock"></a>
+ <a href="https://github.com/martmichals/shopstock/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/martmichals/shopstock"></a>
+  <a href="https://github.com/martmichals/shopstock/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/martmichals/shopstock"></a>
+  <a href="https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fmartmichals%2Fshopstock"><img alt="Twitter" src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com"></a></p>
+<br>
 
 An app developed in the midst of the COVID-19 pandemic. Uses user-reported data in order to provide out-of-stock data on stores in the United States. Meant to limit unnecessary exposure to others in supermarkets by enabling users to ensure the product they are looking for is in stock. <br>
 
